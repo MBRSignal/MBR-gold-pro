@@ -22,28 +22,29 @@
         
         .content { padding: 0 20px; flex: 1; overflow-y: auto; padding-bottom: 80px; }
         
-        /* Tab Navigation Styles */
+        /* Tab Navigation */
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Home & Profile Specific Styles */
+        /* Dashboard & Login Cards */
         .dashboard-card { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 20px; margin-bottom: 15px; text-align: center; }
         .dashboard-card h3 { color: #00ffff; margin-bottom: 10px; font-size: 22px; }
-        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0d1424; border: 1px solid #1f2a40; color: white; border-radius: 6px; font-size: 16px; outline: none; font-family: 'Rajdhani', sans-serif; }
+        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0d1424; border: 1px solid #1f2a40; color: white; border-radius: 6px; font-size: 16px; outline: none; }
         .login-btn { width: 100%; background: #00ffff; color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; transition: 0.2s; }
         .login-btn:active { transform: scale(0.98); }
-        .history-card { background: #141e30; border-left: 4px solid #00ff88; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-right: 1px solid #1f2a40; border-top: 1px solid #1f2a40; border-bottom: 1px solid #1f2a40;}
+        
+        /* History Items */
+        .history-card { background: #141e30; border-left: 4px solid #00ff88; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #1f2a40; border-left-width: 4px; }
         .history-sell { border-left-color: #ff3366; }
         
-        /* Existing Elements */
+        /* Signal Generator UI */
         .dropdown { background: #141e30; border: 1px solid #1f2a40; padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
         .timeframes-scroll { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none; }
         .timeframes-scroll::-webkit-scrollbar { display: none; }
         .time-box { background: #141e30; border: 1px solid #1f2a40; padding: 8px 15px; border-radius: 6px; font-size: 14px; font-weight: 600; color: #94a3b8; cursor: pointer; min-width: 50px; text-align: center; }
         .time-box.active { background: rgba(0, 255, 255, 0.1); border-color: #00ffff; color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
         .lot-container { display: flex; justify-content: space-between; align-items: center; background: #141e30; border: 1px solid #1f2a40; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; }
-        .lot-label { color: #94a3b8; font-weight: 600; font-size: 14px; }
         .lot-controls { display: flex; align-items: center; gap: 10px; }
         .lot-btn { background: #1f2a40; border: none; color: white; width: 30px; height: 30px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; }
         .lot-input { width: 60px; background: transparent; border: none; color: white; font-size: 18px; font-weight: 700; text-align: center; outline: none; }
@@ -61,13 +62,11 @@
         .details-table { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 0 15px; display: none; }
         .detail-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #1f2a40; font-size: 16px; }
         .detail-row:last-child { border-bottom: none; }
-        .detail-label { color: #94a3b8; }
-        .detail-value { font-weight: 600; color: white; }
         .text-cyan { color: #00ffff; text-shadow: 0 0 5px rgba(0,255,255,0.5); }
         .text-red { color: #ff3366; }
         .text-green { color: #00ff88; }
-        .status-active { display: flex; align-items: center; gap: 6px; }
-        .status-dot { width: 8px; height: 8px; background-color: #00ff88; border-radius: 50%; box-shadow: 0 0 8px #00ff88; }
+        .status-dot { width: 8px; height: 8px; background-color: #00ff88; border-radius: 50%; box-shadow: 0 0 8px #00ff88; display: inline-block; margin-right: 5px;}
+        
         .bottom-nav { position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-around; background: #0d1424; padding: 15px 0; border-top: 1px solid #1f2a40; z-index: 10;}
         .nav-item { text-align: center; color: #64748b; font-size: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
@@ -90,11 +89,11 @@
 
     <div class="content">
         
-        <!-- 1. HOME TAB -->
+        <!-- HOME TAB -->
         <div id="homeTab" class="tab-content">
             <div class="dashboard-card">
                 <h3>📊 Market Overview</h3>
-                <p style="color: #94a3b8; font-size: 14px;">Live API Connected</p>
+                <p style="color: #94a3b8; font-size: 14px;">Market Status</p>
                 <div style="display:flex; justify-content:space-around; margin-top:15px; padding-top: 15px; border-top: 1px solid #1f2a40;">
                     <div><div style="color:white; font-weight:bold; font-size:18px;">XAUUSD</div><div class="text-green">ONLINE</div></div>
                     <div><div style="color:white; font-weight:bold; font-size:18px;">EURUSD</div><div class="text-green">ONLINE</div></div>
@@ -102,12 +101,11 @@
             </div>
             <div class="dashboard-card">
                 <h3>📰 Live Forex News</h3>
-                <p style="color: #facc15; font-size: 14px;">Backend integration pending...</p>
-                <p style="color: #94a3b8; font-size: 13px; margin-top:10px;">News sentiment AI will be connected here to filter signals.</p>
+                <p style="color: #facc15; font-size: 14px;">Coming Soon in V2</p>
             </div>
         </div>
 
-        <!-- 2. SIGNAL TAB (Default Active) -->
+        <!-- SIGNAL TAB (Default Active) -->
         <div id="signalTab" class="tab-content active">
             <div class="dropdown"><span id="dropdownText">🪙 GOLD (XAU/USD)</span><span>▼</span></div>
             <div class="timeframes-scroll" id="timeframeContainer">
@@ -117,11 +115,10 @@
                 <div class="time-box" onclick="selectTimeframe(this)">M30</div>
                 <div class="time-box" onclick="selectTimeframe(this)">H1</div>
                 <div class="time-box" onclick="selectTimeframe(this)">H4</div>
-                <div class="time-box" onclick="selectTimeframe(this)">D1</div>
             </div>
 
             <div class="lot-container">
-                <span class="lot-label">Lot Size (Volume)</span>
+                <span style="color: #94a3b8; font-weight: 600; font-size: 14px;">Lot Size (Volume)</span>
                 <div class="lot-controls">
                     <button class="lot-btn" onclick="changeLot(-0.01)">-</button>
                     <input type="number" id="lotSize" class="lot-input" value="0.01" step="0.01" min="0.01" readonly>
@@ -141,20 +138,15 @@
             <div class="signal-action" id="signalBox"><h2 id="signalText">WAITING...</h2></div>
 
             <div class="details-table" id="detailsTable">
-                <div class="detail-row"><span class="detail-label">Pair</span><span class="detail-value" id="displayPair">GOLD (XAUUSD)</span></div>
-                <div class="detail-row"><span class="detail-label">Timeframe</span><span class="detail-value text-cyan" id="selectedTfValue">M15</span></div>
-                <div class="detail-row"><span class="detail-label">Lot Size</span><span class="detail-value text-cyan" id="selectedLotValue">0.01</span></div>
-                <div class="detail-row"><span class="detail-label">Entry Price</span><span class="detail-value" id="entryValue">0.00</span></div>
-                <div class="detail-row"><span class="detail-label">Stop Loss (SL)</span><span class="detail-value text-red" id="slValue">0.00</span></div>
-                <div class="detail-row"><span class="detail-label">Take Profit (TP)</span><span class="detail-value text-green" id="tpValue">0.00</span></div>
-                <div class="detail-row">
-                    <span class="detail-label">Status</span>
-                    <span class="detail-value status-active"><span class="status-dot" id="statusDot"></span> <span id="statusValue" style="margin-left: 5px;">ACTIVE</span></span>
-                </div>
+                <div class="detail-row"><span style="color: #94a3b8;">Pair</span><span style="font-weight: 600;" id="displayPair">GOLD (XAUUSD)</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Entry Price</span><span style="font-weight: 600;" id="entryValue">0.00</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Stop Loss (SL)</span><span class="text-red" style="font-weight: 600;" id="slValue">0.00</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Take Profit (TP)</span><span class="text-green" style="font-weight: 600;" id="tpValue">0.00</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Status</span><span style="font-weight: 600;"><span class="status-dot" id="statusDot"></span><span id="statusValue">ACTIVE</span></span></div>
             </div>
         </div>
 
-        <!-- 3. HISTORY TAB -->
+        <!-- HISTORY TAB -->
         <div id="historyTab" class="tab-content">
             <h2 style="text-align:center; margin-bottom: 20px; font-size: 24px;">Signal History</h2>
             <div id="historyList">
@@ -162,15 +154,15 @@
             </div>
         </div>
 
-        <!-- 4. PROFILE TAB -->
+        <!-- PROFILE / LOGIN TAB -->
         <div id="profileTab" class="tab-content">
             <div class="dashboard-card">
                 <h2 style="margin-bottom: 5px;">VIP Login</h2>
-                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">Access your premium signals</p>
-                <input type="text" id="username" class="login-input" placeholder="Username">
-                <input type="password" id="password" class="login-input" placeholder="Password">
-                <button class="login-btn" onclick="fakeLogin()">LOGIN</button>
-                <p id="loginMsg" style="text-align:center; margin-top:15px; color:#facc15; font-size: 14px; display:none;">Database connection required (Step 2)</p>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">Access your premium database</p>
+                <input type="text" id="loginUser" class="login-input" placeholder="Username (e.g. admin)">
+                <input type="password" id="loginPass" class="login-input" placeholder="Password (e.g. vip123)">
+                <button class="login-btn" id="loginBtnUI" onclick="realLogin()">LOGIN</button>
+                <p id="loginMsg" style="text-align:center; margin-top:15px; font-size: 14px; display:none;"></p>
             </div>
         </div>
 
@@ -186,33 +178,27 @@
 </div>
 
 <script>
+    // PythonAnywhere API Link
+    const apiBaseUrl = "https://Bilal1212.pythonanywhere.com"; 
+
     let currentTimeframe = "M15";
     let currentPair = "XAUUSD";
 
-    // Tab Switching Logic
     function switchTab(tabId, element) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         element.classList.add('active');
     }
 
-    // Profile Login Placeholder
-    function fakeLogin() {
-        let msg = document.getElementById("loginMsg");
-        msg.style.display = "block";
-    }
-
     function selectTimeframe(element) {
-        let boxes = document.querySelectorAll(".time-box");
-        boxes.forEach(box => box.classList.remove("active"));
+        document.querySelectorAll(".time-box").forEach(b => b.classList.remove("active"));
         element.classList.add("active");
         currentTimeframe = element.innerText;
     }
 
     function selectPair(element, pairCode, pairName) {
-        let boxes = document.querySelectorAll(".pair-box");
-        boxes.forEach(box => box.classList.remove("active"));
+        document.querySelectorAll(".pair-box").forEach(b => b.classList.remove("active"));
         element.classList.add("active");
         currentPair = pairCode;
         document.getElementById("dropdownText").innerText = pairName;
@@ -220,91 +206,114 @@
 
     function changeLot(amount) {
         let lotInput = document.getElementById("lotSize");
-        let currentVal = parseFloat(lotInput.value);
-        let newVal = (currentVal + amount).toFixed(2);
-        if (newVal >= 0.01) { lotInput.value = newVal; }
+        let newVal = (parseFloat(lotInput.value) + amount).toFixed(2);
+        if (newVal >= 0.01) lotInput.value = newVal;
     }
 
+    // REAL DATABASE LOGIN FUNCTION
+    function realLogin() {
+        let user = document.getElementById("loginUser").value;
+        let pass = document.getElementById("loginPass").value;
+        let msg = document.getElementById("loginMsg");
+        let btn = document.getElementById("loginBtnUI");
+
+        if(!user || !pass) {
+            msg.innerText = "Please enter username and password.";
+            msg.style.color = "#facc15";
+            msg.style.display = "block";
+            return;
+        }
+
+        btn.innerText = "CHECKING...";
+        btn.disabled = true;
+
+        fetch(`${apiBaseUrl}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: user, password: pass })
+        })
+        .then(res => res.json())
+        .then(data => {
+            msg.style.display = "block";
+            if(data.status === "success") {
+                msg.innerText = "Login Successful! Welcome VIP.";
+                msg.style.color = "#00ff88";
+                setTimeout(() => { switchTab('signalTab', document.querySelectorAll('.nav-item')[1]); }, 1000);
+            } else {
+                msg.innerText = data.message;
+                msg.style.color = "#ff3366";
+            }
+            btn.innerText = "LOGIN";
+            btn.disabled = false;
+        })
+        .catch(err => {
+            msg.innerText = "Connection Error! Check Server.";
+            msg.style.color = "#ff3366";
+            msg.style.display = "block";
+            btn.innerText = "LOGIN";
+            btn.disabled = false;
+        });
+    }
+
+    // REAL SIGNAL GENERATION
     function generateSignal() {
         let btn = document.getElementById("generateBtn");
         let signalBox = document.getElementById("signalBox");
         let signalText = document.getElementById("signalText");
-        let detailsTable = document.getElementById("detailsTable");
-        let currentLot = document.getElementById("lotSize").value;
-        let statVal = document.getElementById("statusValue");
-        let dot = document.getElementById("statusDot");
 
         btn.innerText = "FETCHING LIVE DATA...";
-        btn.style.opacity = "0.7";
         btn.disabled = true;
         signalBox.className = "signal-action";
-        signalText.innerText = "ANALYZING " + currentPair + "...";
-        detailsTable.style.display = "none";
+        signalText.innerText = "ANALYZING...";
+        document.getElementById("detailsTable").style.display = "none";
 
-        fetch(`https://Bilal1212.pythonanywhere.com/get_signal?tf=${currentTimeframe}&pair=${currentPair}`)
-        .then(response => response.json())
+        fetch(`${apiBaseUrl}/get_signal?tf=${currentTimeframe}&pair=${currentPair}`)
+        .then(res => res.json())
         .then(data => {
-            if (data.direction.includes("BUY")) {
-                signalBox.className = "signal-action signal-buy";
-            } else if (data.direction.includes("SELL")) {
-                signalBox.className = "signal-action signal-sell";
-            } else {
-                signalBox.className = "signal-action"; 
-            }
+            if(data.error) throw new Error(data.error);
+
+            if (data.direction.includes("BUY")) signalBox.className = "signal-action signal-buy";
+            else if (data.direction.includes("SELL")) signalBox.className = "signal-action signal-sell";
             
             signalText.innerText = data.direction;
             document.getElementById("displayPair").innerText = data.pair;
-            document.getElementById("selectedTfValue").innerText = currentTimeframe;
-            document.getElementById("selectedLotValue").innerText = currentLot;
             document.getElementById("entryValue").innerText = data.entry_price;
             document.getElementById("slValue").innerText = data.stop_loss;
             document.getElementById("tpValue").innerText = data.take_profit;
             
+            let statVal = document.getElementById("statusValue");
+            let dot = document.getElementById("statusDot");
             statVal.innerText = data.status || "ACTIVE";
-            if(data.status === "STRONG TREND") {
-                statVal.style.color = "#00ff88"; statVal.style.textShadow = "0 0 5px rgba(0,255,136,0.3)";
-                dot.style.backgroundColor = "#00ff88"; dot.style.boxShadow = "0 0 8px #00ff88";
-            } else if(data.status === "WEAK TREND") {
-                statVal.style.color = "#facc15"; statVal.style.textShadow = "0 0 5px rgba(250,204,21,0.3)";
-                dot.style.backgroundColor = "#facc15"; dot.style.boxShadow = "0 0 8px #facc15";
-            } else {
-                statVal.style.color = "#ff3366"; statVal.style.textShadow = "0 0 5px rgba(255,51,102,0.3)";
-                dot.style.backgroundColor = "#ff3366"; dot.style.boxShadow = "0 0 8px #ff3366";
-            }
 
-            // ADD TO HISTORY TAB LOGIC
+            if(data.status === "STRONG TREND") { statVal.style.color = "#00ff88"; dot.style.backgroundColor = "#00ff88"; dot.style.boxShadow = "0 0 8px #00ff88"; } 
+            else if(data.status === "WEAK TREND") { statVal.style.color = "#facc15"; dot.style.backgroundColor = "#facc15"; dot.style.boxShadow = "0 0 8px #facc15"; } 
+            else { statVal.style.color = "#ff3366"; dot.style.backgroundColor = "#ff3366"; dot.style.boxShadow = "0 0 8px #ff3366"; }
+
+            // Add to History
             let historyList = document.getElementById("historyList");
-            let noHist = document.getElementById("noHistoryText");
-            if(noHist) noHist.style.display = "none";
+            if(document.getElementById("noHistoryText")) document.getElementById("noHistoryText").style.display = "none";
             
             let timeNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             let isBuy = data.direction.includes("BUY");
             let hBorder = isBuy ? "" : "history-sell";
             let hColor = isBuy ? "text-green" : "text-red";
             
-            let historyHTML = `
+            historyList.insertAdjacentHTML('afterbegin', `
                 <div class="history-card ${hBorder}">
-                    <div>
-                        <div style="font-size: 16px; font-weight:bold; color:white;">${data.pair} <span style="font-size: 12px; color:#00ffff;">(${currentTimeframe})</span></div>
-                        <div class="${hColor}" style="font-size: 14px; font-weight:bold; margin-top:2px;">${data.direction} @ ${data.entry_price}</div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="font-size: 12px; color:#94a3b8; margin-bottom:2px;">${timeNow}</div>
-                        <div style="font-size: 14px; font-weight:bold; color:#facc15;">TP: ${data.take_profit}</div>
-                    </div>
+                    <div><div style="font-weight:bold; color:white;">${data.pair} <span style="font-size: 12px; color:#00ffff;">(${currentTimeframe})</span></div>
+                    <div class="${hColor}" style="font-size: 14px; font-weight:bold; margin-top:2px;">${data.direction} @ ${data.entry_price}</div></div>
+                    <div style="text-align:right;"><div style="font-size: 12px; color:#94a3b8; margin-bottom:2px;">${timeNow}</div>
+                    <div style="font-size: 14px; font-weight:bold; color:#facc15;">TP: ${data.take_profit}</div></div>
                 </div>
-            `;
-            historyList.insertAdjacentHTML('afterbegin', historyHTML); // Adds new signal to top
+            `);
 
-            detailsTable.style.display = "block";
+            document.getElementById("detailsTable").style.display = "block";
             btn.innerText = "GENERATE SIGNAL";
-            btn.style.opacity = "1";
             btn.disabled = false;
         })
         .catch(error => {
-            signalText.innerText = "CONNECTION ERROR!";
+            signalText.innerText = "MARKET CLOSED / ERROR";
             btn.innerText = "TRY AGAIN";
-            btn.style.opacity = "1";
             btn.disabled = false;
         });
     }
