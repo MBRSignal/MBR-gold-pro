@@ -73,7 +73,7 @@
         .nav-item.active { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
         .nav-icon { font-size: 20px; }
         
-        .user-row { background: #0d1424; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #1f2a40; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .user-row { background: #0d1424; padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #1f2a40; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -175,7 +175,7 @@
             <!-- ADMIN DASHBOARD -->
             <div id="adminView" class="dashboard-card" style="display:none; text-align: left;">
                 <h3 style="color:#00ff88; margin-bottom:10px;">👑 Admin Panel</h3>
-                <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;">Manage users, status & menu access.</p>
+                <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;">Manage users, passwords & permissions.</p>
                 
                 <h4 style="font-size:14px; color:#00ffff; margin-bottom:8px;">Add New User</h4>
                 <input type="text" id="newUsername" class="login-input" placeholder="New Username">
@@ -188,7 +188,7 @@
                 <p id="adminMsg" style="font-size:12px; margin-bottom:10px; display:none;"></p>
 
                 <h4 style="font-size:14px; color:#00ffff; margin-bottom:8px;">Registered Users List</h4>
-                <div id="usersListContainer" style="max-height:200px; overflow-y:auto;"></div>
+                <div id="usersListContainer" style="max-height:250px; overflow-y:auto;"></div>
                 
                 <button class="login-btn" style="background:#ff3366; color:white; margin-top:15px;" onclick="logoutAdmin()">LOGOUT ADMIN</button>
             </div>
@@ -217,7 +217,6 @@
         localStorage.setItem("device_id", deviceId);
     }
 
-    // Load API Calls Automatically
     window.onload = function() {
         checkMarketStatus();
         fetchLiveNews();
@@ -248,7 +247,6 @@
             if(data.status === "success" && data.news.length > 0) {
                 container.innerHTML = "";
                 data.news.forEach(item => {
-                    // Converting Time directly to PKT Zone
                     let dateObj = new Date(item.time);
                     let timeString = isNaN(dateObj) ? item.time : dateObj.toLocaleString('en-US', { timeZone: 'Asia/Karachi', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + " PKT";
                     
@@ -362,20 +360,49 @@
                     let sigCheck = u.can_signal == 1 ? "checked" : "";
                     let histCheck = u.can_history == 1 ? "checked" : "";
                     
-                    if(u.username !== "admin") {
-                        container.innerHTML += `
-                            <div class="user-row">
-                                <div><b>${u.username}</b></div>
-                                <div>
-                                    <label><input type="checkbox" id="stat_${u.username}" ${checkedStatus} onclick="updateUser('${u.username}')"> Active</label><br>
-                                    <label><input type="checkbox" id="sig_${u.username}" ${sigCheck} onclick="updateUser('${u.username}')"> Signal</label>
-                                    <label><input type="checkbox" id="hist_${u.username}" ${histCheck} onclick="updateUser('${u.username}')"> History</label>
-                                </div>
+                    container.innerHTML += `
+                        <div class="user-row">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <b>User: ${u.username}</b>
+                                <span style="color:#00ffff;">Pass: ${u.password}</span>
                             </div>
-                        `;
-                    }
+                            <div style="display:flex; gap:5px; margin-bottom:5px;">
+                                <input type="text" id="pwd_${u.username}" placeholder="New Password" style="flex:1; padding:4px; background:#141e30; border:1px solid #1f2a40; color:white; border-radius:4px; font-size:12px;">
+                                <button onclick="changePassword('${u.username}')" style="background:#00ffff; border:none; padding:4px 8px; font-weight:bold; border-radius:4px; cursor:pointer; font-size:11px;">Update</button>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8;">
+                                <label><input type="checkbox" id="stat_${u.username}" ${checkedStatus} onclick="updateUser('${u.username}')"> Active</label>
+                                <label><input type="checkbox" id="sig_${u.username}" ${sigCheck} onclick="updateUser('${u.username}')"> Signal</label>
+                                <label><input type="checkbox" id="hist_${u.username}" ${histCheck} onclick="updateUser('${u.username}')"> History</label>
+                            </div>
+                        </div>
+                    `;
                 });
             }
+        });
+    }
+
+    function changePassword(username) {
+        let new_password = document.getElementById(`pwd_${username}`).value;
+        let msg = document.getElementById("adminMsg");
+        if(!new_password) {
+            msg.style.display = "block";
+            msg.innerText = "Enter new password first!";
+            msg.style.color = "#facc15";
+            return;
+        }
+
+        fetch(`${apiBaseUrl}/change_password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, new_password })
+        })
+        .then(res => res.json())
+        .then(data => {
+            msg.style.display = "block";
+            msg.innerText = data.message;
+            msg.style.color = "#00ff88";
+            loadAdminUsers();
         });
     }
 
