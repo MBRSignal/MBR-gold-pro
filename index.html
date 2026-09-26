@@ -75,7 +75,6 @@
         
         .user-row { background: #0d1424; padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #1f2a40; font-size: 13px; }
         
-        /* DON'T TRADE ALERT BANNER */
         #noTradeBanner { background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 15px; display: none; animation: pulse 1s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
@@ -98,7 +97,6 @@
         
         <!-- HOME TAB -->
         <div id="homeTab" class="tab-content">
-            <!-- Updated Warning Banner -->
             <div id="noTradeBanner">🚨 DON'T Trade News is starting 🚨</div>
 
             <div class="dashboard-card">
@@ -382,11 +380,13 @@
                     let sigCheck = u.can_signal == 1 ? "checked" : "";
                     let histCheck = u.can_history == 1 ? "checked" : "";
                     
+                    let deleteBtn = u.username !== "admin" ? `<button onclick="deleteUser('${u.username}')" style="background:#ff3366; color:white; border:none; padding:4px 8px; font-weight:bold; border-radius:4px; cursor:pointer; font-size:11px;">Delete</button>` : '';
+
                     container.innerHTML += `
                         <div class="user-row">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                                <b>User: ${u.username}</b>
-                                <span style="color:#00ffff;">Pass: ${u.password}</span>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px; align-items:center;">
+                                <div><b>User: ${u.username}</b> <span style="color:#00ffff; font-size:11px; margin-left:5px;">(Pass: ${u.password})</span></div>
+                                ${deleteBtn}
                             </div>
                             <div style="display:flex; gap:5px; margin-bottom:5px;">
                                 <input type="text" id="pwd_${u.username}" placeholder="New Password" style="flex:1; padding:4px; background:#141e30; border:1px solid #1f2a40; color:white; border-radius:4px; font-size:12px;">
@@ -401,6 +401,24 @@
                     `;
                 });
             }
+        });
+    }
+
+    function deleteUser(username) {
+        if(!confirm(`Are you sure you want to delete user '${username}'?`)) return;
+
+        fetch(`${apiBaseUrl}/delete_user`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username })
+        })
+        .then(res => res.json())
+        .then(data => {
+            let msg = document.getElementById("adminMsg");
+            msg.style.display = "block";
+            msg.innerText = data.message;
+            msg.style.color = data.status === "success" ? "#00ff88" : "#ff3366";
+            loadAdminUsers();
         });
     }
 
