@@ -22,30 +22,24 @@
         
         .content { padding: 0 20px; flex: 1; overflow-y: auto; padding-bottom: 80px; }
         
-        /* Tab Navigation */
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Dashboard & Cards */
         .dashboard-card { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 15px 20px; margin-bottom: 15px; }
         .dashboard-card h3 { color: #00ffff; margin-bottom: 10px; font-size: 20px; display: flex; align-items: center; gap: 8px; }
         
-        /* News Item Styles */
-        .news-item { background: #0d1424; border-left: 3px solid #facc15; padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; border-top: 1px solid #1f2a40; border-right: 1px solid #1f2a40; border-bottom: 1px solid #1f2a40; }
+        .news-item { background: #0d1424; border-left: 3px solid #facc15; padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #1f2a40; border-left-width: 3px; }
         .news-time { font-size: 11px; color: #facc15; font-weight: 600; margin-bottom: 2px; }
-        .news-title { font-size: 13px; color: white; font-weight: 600; line-height: 1.2; }
+        .news-title { font-size: 13px; color: white; font-weight: 600; }
 
-        /* Login & Inputs */
-        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0d1424; border: 1px solid #1f2a40; color: white; border-radius: 6px; font-size: 16px; outline: none; }
+        .login-input { width: 100%; padding: 10px; margin-bottom: 10px; background: #0d1424; border: 1px solid #1f2a40; color: white; border-radius: 6px; font-size: 15px; outline: none; }
         .login-btn { width: 100%; background: #00ffff; color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; transition: 0.2s; }
         .login-btn:active { transform: scale(0.98); }
         
-        /* History Items */
         .history-card { background: #141e30; border-left: 4px solid #00ff88; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #1f2a40; border-left-width: 4px; }
         .history-sell { border-left-color: #ff3366; }
         
-        /* Signal Generator UI */
         .dropdown { background: #141e30; border: 1px solid #1f2a40; padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
         .timeframes-scroll { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none; }
         .timeframes-scroll::-webkit-scrollbar { display: none; }
@@ -78,6 +72,8 @@
         .nav-item { text-align: center; color: #64748b; font-size: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
         .nav-icon { font-size: 20px; }
+        
+        .user-row { background: #0d1424; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #1f2a40; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
@@ -96,14 +92,14 @@
 
     <div class="content">
         
-        <!-- HOME TAB (CLEAN & PROFESSIONAL) -->
+        <!-- HOME TAB -->
         <div id="homeTab" class="tab-content">
             <div class="dashboard-card">
                 <h3>📊 Market Overview</h3>
                 <div style="display:flex; justify-content:space-around; margin-top:10px; text-align:center;">
-                    <div><div style="color:white; font-weight:bold; font-size:16px;">XAUUSD</div><div class="text-green" style="font-size:12px;">ACTIVE</div></div>
-                    <div><div style="color:white; font-weight:bold; font-size:16px;">EURUSD</div><div class="text-green" style="font-size:12px;">ACTIVE</div></div>
-                    <div><div style="color:white; font-weight:bold; font-size:16px;">GBPUSD</div><div class="text-green" style="font-size:12px;">ACTIVE</div></div>
+                    <div><div style="color:white; font-weight:bold; font-size:16px;">XAUUSD</div><div id="marketStatus" class="text-green" style="font-size:12px;">CHECKING...</div></div>
+                    <div><div style="color:white; font-weight:bold; font-size:16px;">EURUSD</div><div class="text-green" style="font-size:12px;">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold; font-size:16px;">GBPUSD</div><div class="text-green" style="font-size:12px;">ONLINE</div></div>
                 </div>
             </div>
 
@@ -118,15 +114,11 @@
                         <div class="news-time">📅 26 Sep 2026 | 19:00 PKT (USD)</div>
                         <div class="news-title">Revised UoM Consumer Sentiment</div>
                     </div>
-                    <div class="news-item">
-                        <div class="news-time">📅 29 Sep 2026 | 13:00 PKT (EUR)</div>
-                        <div class="news-title">German Retail Sales m/m</div>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- SIGNAL TAB (Default Active) -->
+        <!-- SIGNAL TAB -->
         <div id="signalTab" class="tab-content active">
             <div class="dropdown"><span id="dropdownText">🪙 GOLD (XAU/USD)</span><span>▼</span></div>
             <div class="timeframes-scroll" id="timeframeContainer">
@@ -175,15 +167,37 @@
             </div>
         </div>
 
-        <!-- PROFILE / LOGIN TAB -->
+        <!-- PROFILE / LOGIN TAB & ADMIN PANEL -->
         <div id="profileTab" class="tab-content">
-            <div class="dashboard-card" style="text-align: left;">
+            <!-- LOGIN VIEW -->
+            <div id="loginView" class="dashboard-card" style="text-align: left;">
                 <h2 style="margin-bottom: 5px; text-align: center;">VIP Login</h2>
-                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px; text-align: center;">Secure Database Authentication</p>
-                <input type="text" id="loginUser" class="login-input" placeholder="Username (e.g. admin)">
-                <input type="password" id="loginPass" class="login-input" placeholder="Password (e.g. vip123)">
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px; text-align: center;">Secure Device Authentication</p>
+                <input type="text" id="loginUser" class="login-input" placeholder="Username">
+                <input type="password" id="loginPass" class="login-input" placeholder="Password">
                 <button class="login-btn" id="loginBtnUI" onclick="realLogin()">LOGIN</button>
                 <p id="loginMsg" style="text-align:center; margin-top:15px; font-size: 14px; display:none;"></p>
+            </div>
+
+            <!-- ADMIN DASHBOARD (Hidden by default) -->
+            <div id="adminView" class="dashboard-card" style="display:none; text-align: left;">
+                <h3 style="color:#00ff88; margin-bottom:10px;">👑 Admin Panel</h3>
+                <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;">Manage users, status & menu access.</p>
+                
+                <h4 style="font-size:14px; color:#00ffff; margin-bottom:8px;">Add New User</h4>
+                <input type="text" id="newUsername" class="login-input" placeholder="New Username">
+                <input type="password" id="newPassword" class="login-input" placeholder="New Password">
+                <div style="font-size:12px; margin-bottom:10px; color:#94a3b8;">
+                    <label><input type="checkbox" id="newSignalPerm" checked> Allow Signal</label> &nbsp;&nbsp;
+                    <label><input type="checkbox" id="newHistoryPerm" checked> Allow History</label>
+                </div>
+                <button class="login-btn" style="background:#00ff88; margin-bottom:15px;" onclick="createNewUser()">CREATE USER</button>
+                <p id="adminMsg" style="font-size:12px; margin-bottom:10px; display:none;"></p>
+
+                <h4 style="font-size:14px; color:#00ffff; margin-bottom:8px;">Registered Users List</h4>
+                <div id="usersListContainer" style="max-height:200px; overflow-y:auto;"></div>
+                
+                <button class="login-btn" style="background:#ff3366; color:white; margin-top:15px;" onclick="logoutAdmin()">LOGOUT ADMIN</button>
             </div>
         </div>
 
@@ -192,8 +206,8 @@
     <!-- BOTTOM NAVIGATION -->
     <div class="bottom-nav">
         <div class="nav-item" onclick="switchTab('homeTab', this)"><span class="nav-icon">⊞</span><span>Home</span></div>
-        <div class="nav-item active" onclick="switchTab('signalTab', this)"><span class="nav-icon">⚡</span><span>Signal</span></div>
-        <div class="nav-item" onclick="switchTab('historyTab', this)"><span class="nav-icon">⏱</span><span>History</span></div>
+        <div class="nav-item active" id="navSignal" onclick="switchTab('signalTab', this)"><span class="nav-icon">⚡</span><span>Signal</span></div>
+        <div class="nav-item" id="navHistory" onclick="switchTab('historyTab', this)"><span class="nav-icon">⏱</span><span>History</span></div>
         <div class="nav-item" onclick="switchTab('profileTab', this)"><span class="nav-icon">👤</span><span>Profile</span></div>
     </div>
 </div>
@@ -203,6 +217,35 @@
 
     let currentTimeframe = "M15";
     let currentPair = "XAUUSD";
+    
+    // Unique Device ID generate karna taake ek device lock ho sakay
+    let deviceId = localStorage.getItem("device_id");
+    if(!deviceId) {
+        deviceId = 'dev_' + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem("device_id", deviceId);
+    }
+
+    window.onload = function() {
+        checkMarketStatus();
+    }
+
+    function checkMarketStatus() {
+        fetch(`${apiBaseUrl}/market_status`)
+        .then(res => res.json())
+        .then(data => {
+            let el = document.getElementById("marketStatus");
+            if(data.status === "ONLINE") {
+                el.innerText = "ONLINE";
+                el.className = "text-green";
+            } else {
+                el.innerText = "CLOSED";
+                el.className = "text-red";
+            }
+        }).catch(err => {
+            document.getElementById("marketStatus").innerText = "CLOSED";
+            document.getElementById("marketStatus").className = "text-red";
+        });
+    }
 
     function switchTab(tabId, element) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -249,15 +292,28 @@
         fetch(`${apiBaseUrl}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: user, password: pass })
+            body: JSON.stringify({ username: user, password: pass, device_id: deviceId })
         })
         .then(res => res.json())
         .then(data => {
             msg.style.display = "block";
             if(data.status === "success") {
-                msg.innerText = "Login Successful! Welcome VIP.";
+                msg.innerText = "Login Successful!";
                 msg.style.color = "#00ff88";
-                setTimeout(() => { switchTab('signalTab', document.querySelectorAll('.nav-item')[1]); }, 1000);
+                
+                // Permissions check
+                if(data.can_signal == 0) document.getElementById("navSignal").style.display = "none";
+                if(data.can_history == 0) document.getElementById("navHistory").style.display = "none";
+
+                setTimeout(() => {
+                    if(user === "admin") {
+                        document.getElementById("loginView").style.display = "none";
+                        document.getElementById("adminView").style.display = "block";
+                        loadAdminUsers();
+                    } else {
+                        switchTab('signalTab', document.querySelectorAll('.nav-item')[1]);
+                    }
+                }, 1000);
             } else {
                 msg.innerText = data.message;
                 msg.style.color = "#ff3366";
@@ -266,12 +322,97 @@
             btn.disabled = false;
         })
         .catch(err => {
-            msg.innerText = "Connection Error! Check Server.";
+            msg.innerText = "Connection Error!";
             msg.style.color = "#ff3366";
             msg.style.display = "block";
             btn.innerText = "LOGIN";
             btn.disabled = false;
         });
+    }
+
+    function loadAdminUsers() {
+        fetch(`${apiBaseUrl}/get_users`)
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                let container = document.getElementById("usersListContainer");
+                container.innerHTML = "";
+                data.users.forEach(u => {
+                    let checkedStatus = u.status === "active" ? "checked" : "";
+                    let sigCheck = u.can_signal == 1 ? "checked" : "";
+                    let histCheck = u.can_history == 1 ? "checked" : "";
+                    
+                    if(u.username !== "admin") {
+                        container.innerHTML += `
+                            <div class="user-row">
+                                <div><b>${u.username}</b></div>
+                                <div>
+                                    <label><input type="checkbox" id="stat_${u.username}" ${checkedStatus} onclick="updateUser('${u.username}')"> Active</label><br>
+                                    <label><input type="checkbox" id="sig_${u.username}" ${sigCheck} onclick="updateUser('${u.username}')"> Signal</label>
+                                    <label><input type="checkbox" id="hist_${u.username}" ${histCheck} onclick="updateUser('${u.username}')"> History</label>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        });
+    }
+
+    function updateUser(username) {
+        let status = document.getElementById(`stat_${username}`).checked ? "active" : "disabled";
+        let can_signal = document.getElementById(`sig_${username}`).checked ? 1 : 0;
+        let can_history = document.getElementById(`hist_${username}`).checked ? 1 : 0;
+
+        fetch(`${apiBaseUrl}/update_user`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, status, can_signal, can_history })
+        }).then(res => res.json()).then(data => {
+            let msg = document.getElementById("adminMsg");
+            msg.style.display = "block";
+            msg.innerText = data.message;
+            msg.style.color = "#00ff88";
+        });
+    }
+
+    function createNewUser() {
+        let user = document.getElementById("newUsername").value;
+        let pass = document.getElementById("newPassword").value;
+        let can_signal = document.getElementById("newSignalPerm").checked ? 1 : 0;
+        let can_history = document.getElementById("newHistoryPerm").checked ? 1 : 0;
+        let msg = document.getElementById("adminMsg");
+
+        if(!user || !pass) {
+            msg.style.display = "block";
+            msg.innerText = "Enter username & password.";
+            msg.style.color = "#facc15";
+            return;
+        }
+
+        fetch(`${apiBaseUrl}/create_user`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: user, password: pass, can_signal, can_history })
+        })
+        .then(res => res.json())
+        .then(data => {
+            msg.style.display = "block";
+            msg.innerText = data.message;
+            msg.style.color = data.status === "success" ? "#00ff88" : "#ff3366";
+            if(data.status === "success") {
+                document.getElementById("newUsername").value = "";
+                document.getElementById("newPassword").value = "";
+                loadAdminUsers();
+            }
+        });
+    }
+
+    function logoutAdmin() {
+        document.getElementById("adminView").style.display = "none";
+        document.getElementById("loginView").style.display = "block";
+        document.getElementById("loginUser").value = "";
+        document.getElementById("loginPass").value = "";
     }
 
     function generateSignal() {
