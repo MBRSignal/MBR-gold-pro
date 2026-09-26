@@ -27,9 +27,16 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Dashboard & Login Cards */
-        .dashboard-card { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 20px; margin-bottom: 15px; text-align: center; }
-        .dashboard-card h3 { color: #00ffff; margin-bottom: 10px; font-size: 22px; }
+        /* Dashboard & Cards */
+        .dashboard-card { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 15px 20px; margin-bottom: 15px; }
+        .dashboard-card h3 { color: #00ffff; margin-bottom: 10px; font-size: 20px; display: flex; align-items: center; gap: 8px; }
+        
+        /* News Item Styles */
+        .news-item { background: #0d1424; border-left: 3px solid #facc15; padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; border-top: 1px solid #1f2a40; border-right: 1px solid #1f2a40; border-bottom: 1px solid #1f2a40; }
+        .news-time { font-size: 11px; color: #facc15; font-weight: 600; margin-bottom: 2px; }
+        .news-title { font-size: 13px; color: white; font-weight: 600; line-height: 1.2; }
+
+        /* Login & Inputs */
         .login-input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0d1424; border: 1px solid #1f2a40; color: white; border-radius: 6px; font-size: 16px; outline: none; }
         .login-btn { width: 100%; background: #00ffff; color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; transition: 0.2s; }
         .login-btn:active { transform: scale(0.98); }
@@ -89,19 +96,33 @@
 
     <div class="content">
         
-        <!-- HOME TAB -->
+        <!-- HOME TAB (CLEAN & PROFESSIONAL) -->
         <div id="homeTab" class="tab-content">
             <div class="dashboard-card">
                 <h3>📊 Market Overview</h3>
-                <p style="color: #94a3b8; font-size: 14px;">Market Status</p>
-                <div style="display:flex; justify-content:space-around; margin-top:15px; padding-top: 15px; border-top: 1px solid #1f2a40;">
-                    <div><div style="color:white; font-weight:bold; font-size:18px;">XAUUSD</div><div class="text-green">ONLINE</div></div>
-                    <div><div style="color:white; font-weight:bold; font-size:18px;">EURUSD</div><div class="text-green">ONLINE</div></div>
+                <div style="display:flex; justify-content:space-around; margin-top:10px; text-align:center;">
+                    <div><div style="color:white; font-weight:bold; font-size:16px;">XAUUSD</div><div class="text-green" style="font-size:12px;">ACTIVE</div></div>
+                    <div><div style="color:white; font-weight:bold; font-size:16px;">EURUSD</div><div class="text-green" style="font-size:12px;">ACTIVE</div></div>
+                    <div><div style="color:white; font-weight:bold; font-size:16px;">GBPUSD</div><div class="text-green" style="font-size:12px;">ACTIVE</div></div>
                 </div>
             </div>
+
             <div class="dashboard-card">
-                <h3>📰 Live Forex News</h3>
-                <p style="color: #facc15; font-size: 14px;">Coming Soon in V2</p>
+                <h3>📰 Live Forex Calendar & News</h3>
+                <div style="margin-top: 5px;">
+                    <div class="news-item">
+                        <div class="news-time">📅 26 Sep 2026 | 18:30 PKT (USD)</div>
+                        <div class="news-title">Core PCE Price Index m/m</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-time">📅 26 Sep 2026 | 19:00 PKT (USD)</div>
+                        <div class="news-title">Revised UoM Consumer Sentiment</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-time">📅 29 Sep 2026 | 13:00 PKT (EUR)</div>
+                        <div class="news-title">German Retail Sales m/m</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -156,9 +177,9 @@
 
         <!-- PROFILE / LOGIN TAB -->
         <div id="profileTab" class="tab-content">
-            <div class="dashboard-card">
-                <h2 style="margin-bottom: 5px;">VIP Login</h2>
-                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">Access your premium database</p>
+            <div class="dashboard-card" style="text-align: left;">
+                <h2 style="margin-bottom: 5px; text-align: center;">VIP Login</h2>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px; text-align: center;">Secure Database Authentication</p>
                 <input type="text" id="loginUser" class="login-input" placeholder="Username (e.g. admin)">
                 <input type="password" id="loginPass" class="login-input" placeholder="Password (e.g. vip123)">
                 <button class="login-btn" id="loginBtnUI" onclick="realLogin()">LOGIN</button>
@@ -178,7 +199,6 @@
 </div>
 
 <script>
-    // PythonAnywhere API Link
     const apiBaseUrl = "https://Bilal1212.pythonanywhere.com"; 
 
     let currentTimeframe = "M15";
@@ -210,7 +230,6 @@
         if (newVal >= 0.01) lotInput.value = newVal;
     }
 
-    // REAL DATABASE LOGIN FUNCTION
     function realLogin() {
         let user = document.getElementById("loginUser").value;
         let pass = document.getElementById("loginPass").value;
@@ -255,7 +274,6 @@
         });
     }
 
-    // REAL SIGNAL GENERATION
     function generateSignal() {
         let btn = document.getElementById("generateBtn");
         let signalBox = document.getElementById("signalBox");
@@ -289,7 +307,6 @@
             else if(data.status === "WEAK TREND") { statVal.style.color = "#facc15"; dot.style.backgroundColor = "#facc15"; dot.style.boxShadow = "0 0 8px #facc15"; } 
             else { statVal.style.color = "#ff3366"; dot.style.backgroundColor = "#ff3366"; dot.style.boxShadow = "0 0 8px #ff3366"; }
 
-            // Add to History
             let historyList = document.getElementById("historyList");
             if(document.getElementById("noHistoryText")) document.getElementById("noHistoryText").style.display = "none";
             
