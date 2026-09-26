@@ -98,22 +98,15 @@
                 <h3>📊 Market Overview</h3>
                 <div style="display:flex; justify-content:space-around; margin-top:10px; text-align:center;">
                     <div><div style="color:white; font-weight:bold; font-size:16px;">XAUUSD</div><div id="marketStatus" class="text-green" style="font-size:12px;">CHECKING...</div></div>
-                    <div><div style="color:white; font-weight:bold; font-size:16px;">EURUSD</div><div class="text-green" style="font-size:12px;">ONLINE</div></div>
-                    <div><div style="color:white; font-weight:bold; font-size:16px;">GBPUSD</div><div class="text-green" style="font-size:12px;">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold; font-size:16px;">EURUSD</div><div class="text-green" style="font-size:12px;" id="marketStatusEUR">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold; font-size:16px;">GBPUSD</div><div class="text-green" style="font-size:12px;" id="marketStatusGBP">ONLINE</div></div>
                 </div>
             </div>
 
             <div class="dashboard-card">
-                <h3>📰 Live Forex Calendar & News</h3>
-                <div style="margin-top: 5px;">
-                    <div class="news-item">
-                        <div class="news-time">📅 26 Sep 2026 | 18:30 PKT (USD)</div>
-                        <div class="news-title">Core PCE Price Index m/m</div>
-                    </div>
-                    <div class="news-item">
-                        <div class="news-time">📅 26 Sep 2026 | 19:00 PKT (USD)</div>
-                        <div class="news-title">Revised UoM Consumer Sentiment</div>
-                    </div>
+                <h3>📰 Live Forex Calendar</h3>
+                <div id="newsContainer" style="margin-top: 5px;">
+                    <div class="news-time" style="text-align:center;">Fetching live news...</div>
                 </div>
             </div>
         </div>
@@ -179,7 +172,7 @@
                 <p id="loginMsg" style="text-align:center; margin-top:15px; font-size: 14px; display:none;"></p>
             </div>
 
-            <!-- ADMIN DASHBOARD (Hidden by default) -->
+            <!-- ADMIN DASHBOARD -->
             <div id="adminView" class="dashboard-card" style="display:none; text-align: left;">
                 <h3 style="color:#00ff88; margin-bottom:10px;">👑 Admin Panel</h3>
                 <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;">Manage users, status & menu access.</p>
@@ -218,32 +211,60 @@
     let currentTimeframe = "M15";
     let currentPair = "XAUUSD";
     
-    // Unique Device ID generate karna taake ek device lock ho sakay
     let deviceId = localStorage.getItem("device_id");
     if(!deviceId) {
         deviceId = 'dev_' + Math.random().toString(36).substring(2, 15);
         localStorage.setItem("device_id", deviceId);
     }
 
+    // Load API Calls Automatically
     window.onload = function() {
         checkMarketStatus();
+        fetchLiveNews();
     }
 
     function checkMarketStatus() {
         fetch(`${apiBaseUrl}/market_status`)
         .then(res => res.json())
         .then(data => {
-            let el = document.getElementById("marketStatus");
-            if(data.status === "ONLINE") {
-                el.innerText = "ONLINE";
-                el.className = "text-green";
+            let els = [document.getElementById("marketStatus"), document.getElementById("marketStatusEUR"), document.getElementById("marketStatusGBP")];
+            els.forEach(el => {
+                if(data.status === "ONLINE") {
+                    el.innerText = "ONLINE";
+                    el.className = "text-green";
+                } else {
+                    el.innerText = "CLOSED";
+                    el.className = "text-red";
+                }
+            });
+        }).catch(err => console.log(err));
+    }
+
+    function fetchLiveNews() {
+        let container = document.getElementById("newsContainer");
+        fetch(`${apiBaseUrl}/get_news`)
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success" && data.news.length > 0) {
+                container.innerHTML = "";
+                data.news.forEach(item => {
+                    // Converting Time directly to PKT Zone
+                    let dateObj = new Date(item.time);
+                    let timeString = isNaN(dateObj) ? item.time : dateObj.toLocaleString('en-US', { timeZone: 'Asia/Karachi', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + " PKT";
+                    
+                    container.innerHTML += `
+                        <div class="news-item">
+                            <div class="news-time">📅 ${timeString} (${item.currency})</div>
+                            <div class="news-title">${item.title}</div>
+                        </div>
+                    `;
+                });
             } else {
-                el.innerText = "CLOSED";
-                el.className = "text-red";
+                container.innerHTML = "<div class='news-time'>No live news fetched yet.</div>";
             }
-        }).catch(err => {
-            document.getElementById("marketStatus").innerText = "CLOSED";
-            document.getElementById("marketStatus").className = "text-red";
+        })
+        .catch(err => {
+            container.innerHTML = "<div class='news-time'>Error loading news feed.</div>";
         });
     }
 
@@ -301,7 +322,6 @@
                 msg.innerText = "Login Successful!";
                 msg.style.color = "#00ff88";
                 
-                // Permissions check
                 if(data.can_signal == 0) document.getElementById("navSignal").style.display = "none";
                 if(data.can_history == 0) document.getElementById("navHistory").style.display = "none";
 
