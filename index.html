@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brothers FX - MBR Gold Pro</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; }
+        body { background-color: #0b101e; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 400px; background-color: #0d1424; height: 100vh; max-height: 850px; position: relative; display: flex; flex-direction: column; border: 1px solid #1f2a40; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { width: 35px; height: 35px; background: radial-gradient(circle, #00d2ff, #0a1f3d); border-radius: 50%; border: 1px solid #00d2ff; }
+        .logo-text-container { display: flex; flex-direction: column; }
+        .logo-text { font-size: 24px; font-weight: 700; color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); font-style: italic; line-height: 1; }
+        .logo-text span { color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
+        .logo-subtitle { font-size: 11px; font-weight: 700; color: #facc15; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; text-shadow: 0 0 8px rgba(250, 204, 21, 0.6); }
+        .header-icons { display: flex; gap: 10px; align-items: center; }
+        .vip-badge { background: #1a2c42; color: #00ffff; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 1px solid #00ffff; }
+        .profile-icon { width: 30px; height: 30px; border: 1px solid #334155; border-radius: 6px; display: flex; justify-content: center; align-items: center; color: #00ffff; }
+        .content { padding: 0 20px; flex: 1; overflow-y: auto; padding-bottom: 80px; }
+        .dropdown { background: #141e30; border: 1px solid #1f2a40; padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
+        .timeframes-scroll { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none; }
+        .timeframes-scroll::-webkit-scrollbar { display: none; }
+        .time-box { background: #141e30; border: 1px solid #1f2a40; padding: 8px 15px; border-radius: 6px; font-size: 14px; font-weight: 600; color: #94a3b8; cursor: pointer; min-width: 50px; text-align: center; }
+        .time-box.active { background: rgba(0, 255, 255, 0.1); border-color: #00ffff; color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+        .lot-container { display: flex; justify-content: space-between; align-items: center; background: #141e30; border: 1px solid #1f2a40; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; }
+        .lot-label { color: #94a3b8; font-weight: 600; font-size: 14px; }
+        .lot-controls { display: flex; align-items: center; gap: 10px; }
+        .lot-btn { background: #1f2a40; border: none; color: white; width: 30px; height: 30px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .lot-btn:active { background: #00ffff; color: black; }
+        .lot-input { width: 60px; background: transparent; border: none; color: white; font-size: 18px; font-weight: 700; text-align: center; font-family: 'Rajdhani', sans-serif; outline: none; }
+        .generate-btn { width: 100%; background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%); color: #000; border: none; padding: 15px; border-radius: 8px; font-size: 20px; font-weight: 700; margin-bottom: 25px; box-shadow: 0 0 20px rgba(0, 242, 254, 0.4); cursor: pointer; transition: 0.2s; }
+        .generate-btn:active { transform: scale(0.98); }
+        .pairs-scroll { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 5px; scrollbar-width: none; }
+        .pairs-scroll::-webkit-scrollbar { display: none; }
+        .pair-box { background: #141e30; border: 1px solid #1f2a40; padding: 10px; border-radius: 8px; min-width: 70px; text-align: center; font-size: 12px; color: #94a3b8; cursor: pointer; }
+        .pair-box.active { border-color: #00ffff; color: white; box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1); }
+        .signal-action { background: #141e30; border: 2px solid #1f2a40; border-radius: 12px; text-align: center; padding: 15px; margin-bottom: 20px; transition: 0.3s;}
+        .signal-action h2 { color: #ffffff; font-size: 30px; font-weight: 700; margin: 0; letter-spacing: 1px; }
+        .signal-sell { background: rgba(255, 51, 102, 0.05); border-color: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.3); }
+        .signal-sell h2 { text-shadow: 0 0 10px #ff3366; color: white; }
+        .signal-buy { background: rgba(0, 255, 136, 0.05); border-color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+        .signal-buy h2 { text-shadow: 0 0 10px #00ff88; color: white; }
+        .details-table { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 0 15px; display: none; }
+        .detail-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #1f2a40; font-size: 16px; }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: #94a3b8; }
+        .detail-value { font-weight: 600; color: white; }
+        .text-cyan { color: #00ffff; text-shadow: 0 0 5px rgba(0,255,255,0.5); }
+        .text-red { color: #ff3366; }
+        .text-green { color: #00ff88; }
+        .status-active { display: flex; align-items: center; gap: 6px; }
+        .status-dot { width: 8px; height: 8px; background-color: #00ff88; border-radius: 50%; box-shadow: 0 0 8px #00ff88; }
+        .bottom-nav { position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-around; background: #0d1424; padding: 15px 0; border-top: 1px solid #1f2a40; }
+        .nav-item { text-align: center; color: #64748b; font-size: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
+        .nav-item.active { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+        .nav-icon { font-size: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="phone-container">
+    <div class="header">
+        <div class="logo-area">
+            <div class="logo-icon"></div>
+            <div class="logo-text-container">
+                <div class="logo-text">BROTHERS <span>FX</span></div>
+                <div class="logo-subtitle">MBR GOLD Pro Signal</div>
+            </div>
+        </div>
+        <div class="header-icons"><span class="vip-badge">VIP</span><div class="profile-icon">👤</div></div>
+    </div>
+
+    <div class="content">
+        <div class="dropdown"><span id="dropdownText">🪙 GOLD (XAU/USD)</span><span>▼</span></div>
+        
+        <div class="timeframes-scroll" id="timeframeContainer">
+            <div class="time-box" onclick="selectTimeframe(this)">M1</div>
+            <div class="time-box" onclick="selectTimeframe(this)">M5</div>
+            <div class="time-box active" onclick="selectTimeframe(this)">M15</div>
+            <div class="time-box" onclick="selectTimeframe(this)">M30</div>
+            <div class="time-box" onclick="selectTimeframe(this)">H1</div>
+            <div class="time-box" onclick="selectTimeframe(this)">H4</div>
+            <div class="time-box" onclick="selectTimeframe(this)">D1</div>
+        </div>
+
+        <div class="lot-container">
+            <span class="lot-label">Lot Size (Volume)</span>
+            <div class="lot-controls">
+                <button class="lot-btn" onclick="changeLot(-0.01)">-</button>
+                <input type="number" id="lotSize" class="lot-input" value="0.01" step="0.01" min="0.01" readonly>
+                <button class="lot-btn" onclick="changeLot(0.01)">+</button>
+            </div>
+        </div>
+
+        <button class="generate-btn" id="generateBtn" onclick="generateSignal()">GENERATE SIGNAL</button>
+
+        <div class="pairs-scroll">
+            <div class="pair-box active" onclick="selectPair(this, 'XAUUSD', '🪙 GOLD (XAU/USD)')">🪙<br>XAUUSD</div>
+            <div class="pair-box" onclick="selectPair(this, 'EURUSD', '🇪🇺 EUR/USD')">🇪🇺<br>EURUSD</div>
+            <div class="pair-box" onclick="selectPair(this, 'GBPUSD', '🇬🇧 GBP/USD')">🇬🇧<br>GBPUSD</div>
+            <div class="pair-box" onclick="selectPair(this, 'USDJPY', '🇯🇵 USD/JPY')">🇯🇵<br>USDJPY</div>
+        </div>
+
+        <div class="signal-action" id="signalBox">
+            <h2 id="signalText">WAITING...</h2>
+        </div>
+
+        <div class="details-table" id="detailsTable">
+            <div class="detail-row"><span class="detail-label">Pair</span><span class="detail-value" id="displayPair">GOLD (XAUUSD)</span></div>
+            <div class="detail-row"><span class="detail-label">Timeframe</span><span class="detail-value text-cyan" id="selectedTfValue">M15</span></div>
+            <div class="detail-row"><span class="detail-label">Lot Size</span><span class="detail-value text-cyan" id="selectedLotValue">0.01</span></div>
+            <div class="detail-row"><span class="detail-label">Entry Price</span><span class="detail-value" id="entryValue">0.00</span></div>
+            <div class="detail-row"><span class="detail-label">Stop Loss (SL)</span><span class="detail-value text-red" id="slValue">0.00</span></div>
+            <div class="detail-row"><span class="detail-label">Take Profit (TP)</span><span class="detail-value text-green" id="tpValue">0.00</span></div>
+            <div class="detail-row">
+                <span class="detail-label">Status</span>
+                <span class="detail-value status-active">
+                    <span class="status-dot" id="statusDot"></span> 
+                    <span id="statusValue" style="margin-left: 5px;">ACTIVE</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item"><span class="nav-icon">⊞</span><span>Home</span></div>
+        <div class="nav-item active"><span class="nav-icon">⚡</span><span>Signal</span></div>
+        <div class="nav-item"><span class="nav-icon">⏱</span><span>History</span></div>
+        <div class="nav-item"><span class="nav-icon">👤</span><span>Profile</span></div>
+    </div>
+</div>
+
+<script>
+    let currentTimeframe = "M15";
+    let currentPair = "XAUUSD";
+
+    function selectTimeframe(element) {
+        let boxes = document.querySelectorAll(".time-box");
+        boxes.forEach(box => box.classList.remove("active"));
+        element.classList.add("active");
+        currentTimeframe = element.innerText;
+    }
+
+    function selectPair(element, pairCode, pairName) {
+        let boxes = document.querySelectorAll(".pair-box");
+        boxes.forEach(box => box.classList.remove("active"));
+        element.classList.add("active");
+        currentPair = pairCode;
+        document.getElementById("dropdownText").innerText = pairName;
+    }
+
+    function changeLot(amount) {
+        let lotInput = document.getElementById("lotSize");
+        let currentVal = parseFloat(lotInput.value);
+        let newVal = (currentVal + amount).toFixed(2);
+        if (newVal >= 0.01) {
+            lotInput.value = newVal;
+        }
+    }
+
+    function generateSignal() {
+        let btn = document.getElementById("generateBtn");
+        let signalBox = document.getElementById("signalBox");
+        let signalText = document.getElementById("signalText");
+        let detailsTable = document.getElementById("detailsTable");
+        let currentLot = document.getElementById("lotSize").value;
+        let statVal = document.getElementById("statusValue");
+        let dot = document.getElementById("statusDot");
+
+        btn.innerText = "FETCHING LIVE DATA...";
+        btn.style.opacity = "0.7";
+        btn.disabled = true;
+        signalBox.className = "signal-action";
+        signalText.innerText = "ANALYZING " + currentPair + "...";
+        detailsTable.style.display = "none";
+
+        fetch(`https://Bilal1212.pythonanywhere.com/get_signal?tf=${currentTimeframe}&pair=${currentPair}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.direction.includes("BUY")) {
+                signalBox.className = "signal-action signal-buy";
+            } else if (data.direction.includes("SELL")) {
+                signalBox.className = "signal-action signal-sell";
+            } else {
+                signalBox.className = "signal-action"; 
+            }
+            
+            signalText.innerText = data.direction;
+            document.getElementById("displayPair").innerText = data.pair;
+            document.getElementById("selectedTfValue").innerText = currentTimeframe;
+            document.getElementById("selectedLotValue").innerText = currentLot;
+            document.getElementById("entryValue").innerText = data.entry_price;
+            document.getElementById("slValue").innerText = data.stop_loss;
+            document.getElementById("tpValue").innerText = data.take_profit;
+            
+            // Dynamic Status Colors Update
+            statVal.innerText = data.status || "ACTIVE";
+            if(data.status === "STRONG TREND") {
+                statVal.style.color = "#00ff88";
+                statVal.style.textShadow = "0 0 5px rgba(0,255,136,0.3)";
+                dot.style.backgroundColor = "#00ff88";
+                dot.style.boxShadow = "0 0 8px #00ff88";
+            } else if(data.status === "WEAK TREND") {
+                statVal.style.color = "#facc15";
+                statVal.style.textShadow = "0 0 5px rgba(250,204,21,0.3)";
+                dot.style.backgroundColor = "#facc15";
+                dot.style.boxShadow = "0 0 8px #facc15";
+            } else {
+                statVal.style.color = "#ff3366";
+                statVal.style.textShadow = "0 0 5px rgba(255,51,102,0.3)";
+                dot.style.backgroundColor = "#ff3366";
+                dot.style.boxShadow = "0 0 8px #ff3366";
+            }
+
+            detailsTable.style.display = "block";
+            btn.innerText = "GENERATE SIGNAL";
+            btn.style.opacity = "1";
+            btn.disabled = false;
+        })
+        .catch(error => {
+            signalText.innerText = "CONNECTION ERROR!";
+            btn.innerText = "TRY AGAIN";
+            btn.style.opacity = "1";
+            btn.disabled = false;
+            console.error("Error fetching signal:", error);
+        });
+    }
+</script>
+</body>
+</html>
