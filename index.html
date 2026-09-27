@@ -192,9 +192,14 @@
     const apiBaseUrl = "https://Bilal1212.pythonanywhere.com"; 
     let currentTimeframe = "M15";
     let currentPair = "XAUUSD";
-    let isLoggedIn = false; 
-    let isAdmin = false;
-    let userPermissions = { can_signal: 1, can_history: 1 };
+    
+    // Persistent Login Session using localStorage to fix refresh logout bug
+    let isLoggedIn = localStorage.getItem("gold_logged_in") === "true";
+    let isAdmin = localStorage.getItem("gold_is_admin") === "true";
+    let userPermissions = {
+        can_signal: parseInt(localStorage.getItem("gold_can_signal") || "1"),
+        can_history: parseInt(localStorage.getItem("gold_can_history") || "1")
+    };
 
     let deviceId = localStorage.getItem("device_id") || ('dev_' + Math.random().toString(36).substring(2, 15));
     localStorage.setItem("device_id", deviceId);
@@ -204,6 +209,17 @@
         fetchLiveNews();
         let today = new Date().toISOString().split('T')[0];
         if(document.getElementById("newStartDate")) document.getElementById("newStartDate").value = today;
+
+        // Restore UI state if already logged in
+        if (isLoggedIn) {
+            if (isAdmin) {
+                document.getElementById("loginView").style.display = "none";
+                document.getElementById("adminView").style.display = "block";
+                loadAdminUsers();
+            } else {
+                switchTab('signalTab', document.querySelectorAll('.nav-item')[1]);
+            }
+        }
     }
 
     function checkMarketStatus() {
@@ -338,16 +354,24 @@
                 isLoggedIn = true; 
                 userPermissions.can_signal = data.can_signal;
                 userPermissions.can_history = data.can_history;
+
+                // Save session in localStorage
+                localStorage.setItem("gold_logged_in", "true");
+                localStorage.setItem("gold_can_signal", data.can_signal);
+                localStorage.setItem("gold_can_history", data.can_history);
+
                 msg.innerText = "Login Successful!";
                 msg.style.color = "#00ff88";
                 setTimeout(() => {
                     if(user === "admin") {
                         isAdmin = true;
+                        localStorage.setItem("gold_is_admin", "true");
                         document.getElementById("loginView").style.display = "none";
                         document.getElementById("adminView").style.display = "block";
                         loadAdminUsers();
                     } else {
                         isAdmin = false;
+                        localStorage.setItem("gold_is_admin", "false");
                         switchTab('signalTab', document.querySelectorAll('.nav-item')[1]);
                     }
                 }, 1000);
@@ -365,13 +389,16 @@
                 container.innerHTML = "";
                 data.users.forEach(u => {
                     if(u.username !== "admin") {
+                        let isCheckedActive = u.status === 'active' ? 'checked' : '';
                         container.innerHTML += `
                             <div class="user-row">
                                 <b>User:</b> ${u.username} | <b>Pass:</b> ${u.password}<br>
                                 <b>ID:</b> ${u.id_card} | <b>Phone:</b> ${u.phone}<br>
-                                <b>Expires:</b> <input type="date" id="end_${u.username}" value="${u.end_date}" style="background:#0d1424; color:white; border:1px solid #1f2a40; padding:2px;"><br>
-                                <label><input type="checkbox" id="sig_${u.username}" ${u.can_signal ? 'checked' : ''}> Signal</label>
-                                <label style="margin-left:10px;"><input type="checkbox" id="hist_${u.username}" ${u.can_history ? 'checked' : ''}> History</label>
+                                <b>Start:</b> <input type="date" id="start_${u.username}" value="${u.start_date || ''}" style="background:#0d1424; color:white; border:1px solid #1f2a40; padding:2px; font-size:11px;"><br>
+                                <b>Expiry:</b> <input type="date" id="end_${u.username}" value="${u.end_date || ''}" style="background:#0d1424; color:white; border:1px solid #1f2a40; padding:2px; font-size:11px;"><br>
+                                <label><input type="checkbox" id="status_${u.username}" ${isCheckedActive}> Active</label>
+                                <label style="margin-left:5px;"><input type="checkbox" id="sig_${u.username}" ${u.can_signal ? 'checked' : ''}> Signal</label>
+                                <label style="margin-left:5px;"><input type="checkbox" id="hist_${u.username}" ${u.can_history ? 'checked' : ''}> History</label>
                                 <br><button onclick="updateUser('${u.username}')" style="background:#00ff88; border:none; color:black; padding:3px 8px; border-radius:4px; margin-top:5px; font-weight:bold;">Update</button>
                                 <button onclick="deleteUser('${u.username}')" style="background:#ff3366; border:none; color:white; padding:3px 8px; border-radius:4px; margin-top:5px; float:right;">Delete</button>
                             </div>`;
@@ -383,14 +410,16 @@
 
     function updateUser(username) {
         if (!isAdmin) return;
+        let status = document.getElementById(`status_${username}`).checked ? 'active' : 'disabled';
         let can_signal = document.getElementById(`sig_${username}`).checked ? 1 : 0;
         let can_history = document.getElementById(`hist_${username}`).checked ? 1 : 0;
+        let start_date = document.getElementById(`start_${username}`).value;
         let end_date = document.getElementById(`end_${username}`).value;
 
         fetch(`${apiBaseUrl}/update_user`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, status: 'active', can_signal, can_history, end_date})
+            body: JSON.stringify({username, status, can_signal, can_history, start_date, end_date})
         }).then(res => res.json()).then(data => {
             alert(data.message);
             loadAdminUsers();
@@ -448,6 +477,10 @@
     function logoutAdmin() {
         isLoggedIn = false;
         isAdmin = false;
+        localStorage.removeItem("gold_logged_in");
+        localStorage.removeItem("gold_is_admin");
+        localStorage.removeItem("gold_can_signal");
+        localStorage.removeItem("gold_can_history");
         document.getElementById("adminView").style.display = "none";
         document.getElementById("loginView").style.display = "block";
     }
