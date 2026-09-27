@@ -69,9 +69,6 @@
         .nav-icon { font-size: 20px; }
         
         .user-row { background: #0d1424; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #1f2a40; font-size: 13px; }
-        .profile-box { background: #0d1424; padding: 15px; border-radius: 8px; border: 1px solid #1f2a40; text-align: center; margin-bottom: 15px; }
-        .profile-img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #00ffff; object-fit: cover; margin-bottom: 10px; }
-        .profile-info { text-align: left; font-size: 14px; margin-top: 10px; background: #141e30; padding: 10px; border-radius: 6px; }
         #noTradeBanner { background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 15px; display: none; }
     </style>
 </head>
@@ -108,7 +105,7 @@
         </div>
 
         <!-- SIGNAL TAB -->
-        <div id="signalTab" class="tab-content">
+        <div id="signalTab" class="tab-content active">
             <div class="dropdown"><span id="dropdownText">🪙 GOLD (XAU/USD)</span><span>▼</span></div>
             <div class="timeframes-scroll">
                 <div class="time-box" onclick="selectTimeframe(this)">M1</div>
@@ -155,7 +152,7 @@
         </div>
 
         <!-- PROFILE TAB -->
-        <div id="profileTab" class="tab-content active">
+        <div id="profileTab" class="tab-content">
             <div id="loginView" class="dashboard-card">
                 <h2 style="margin-bottom: 5px; text-align: center;">VIP Login</h2>
                 <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px; text-align: center;">Secure Device Authentication</p>
@@ -165,25 +162,6 @@
                 <p id="loginMsg" style="text-align:center; margin-top:15px; display:none;"></p>
             </div>
             
-            <!-- USER PROFILE VIEW (READ-ONLY) -->
-            <div id="userProfileView" class="dashboard-card" style="display:none;">
-                <h3 style="color:#00ffff; margin-bottom:10px;">👤 My Profile</h3>
-                <div class="profile-box">
-                    <img id="userProfileImg" src="https://via.placeholder.com/80" class="profile-img" alt="Profile">
-                    <input type="file" id="userPicInput" accept="image/*" style="display:none;" onchange="uploadProfilePic(event)">
-                    <button onclick="document.getElementById('userPicInput').click()" style="background:#1f2a40; color:#00ffff; border:1px solid #00ffff; padding:5px 10px; border-radius:4px; font-size:12px; cursor:pointer; display:block; margin: 0 auto;">Change Picture</button>
-                </div>
-                <div class="profile-info">
-                    <p><b>Username:</b> <span id="pUser" style="color:#00ffff;">-</span></p>
-                    <p><b>ID Card:</b> <span id="pIdCard">-</span></p>
-                    <p><b>Phone:</b> <span id="pPhone">-</span></p>
-                    <p><b>Start Date:</b> <span id="pStart">-</span></p>
-                    <p><b>Expiry Date:</b> <span id="pEnd" style="color:#ff3366;">-</span></p>
-                </div>
-                <button class="login-btn" style="background:#ff3366; color:white; margin-top:15px;" onclick="logoutUser()">LOGOUT</button>
-            </div>
-
-            <!-- ADMIN PANEL VIEW -->
             <div id="adminView" class="dashboard-card" style="display:none;">
                 <h3 style="color:#00ff88; margin-bottom:10px;">👑 Admin Panel</h3>
                 <input type="text" id="newUsername" class="login-input" placeholder="New Username">
@@ -204,9 +182,9 @@
 
     <div class="bottom-nav">
         <div class="nav-item" onclick="switchTab('homeTab', this)"><span class="nav-icon">⊞</span><span>Home</span></div>
-        <div class="nav-item" id="navSignal" onclick="switchTab('signalTab', this)"><span class="nav-icon">⚡</span><span>Signal</span></div>
+        <div class="nav-item active" id="navSignal" onclick="switchTab('signalTab', this)"><span class="nav-icon">⚡</span><span>Signal</span></div>
         <div class="nav-item" id="navHistory" onclick="switchTab('historyTab', this)"><span class="nav-icon">⏱</span><span>History</span></div>
-        <div class="nav-item active" onclick="switchTab('profileTab', this)"><span class="nav-icon">👤</span><span>Profile</span></div>
+        <div class="nav-item" onclick="switchTab('profileTab', this)"><span class="nav-icon">👤</span><span>Profile</span></div>
     </div>
 </div>
 
@@ -215,9 +193,9 @@
     let currentTimeframe = "M15";
     let currentPair = "XAUUSD";
     
+    // Persistent Login Session using localStorage to fix refresh logout bug
     let isLoggedIn = localStorage.getItem("gold_logged_in") === "true";
     let isAdmin = localStorage.getItem("gold_is_admin") === "true";
-    let currentUsername = localStorage.getItem("gold_username") || "";
     let userPermissions = {
         can_signal: parseInt(localStorage.getItem("gold_can_signal") || "1"),
         can_history: parseInt(localStorage.getItem("gold_can_history") || "1")
@@ -232,14 +210,14 @@
         let today = new Date().toISOString().split('T')[0];
         if(document.getElementById("newStartDate")) document.getElementById("newStartDate").value = today;
 
+        // Restore UI state if already logged in
         if (isLoggedIn) {
-            document.getElementById("loginView").style.display = "none";
             if (isAdmin) {
+                document.getElementById("loginView").style.display = "none";
                 document.getElementById("adminView").style.display = "block";
                 loadAdminUsers();
             } else {
-                document.getElementById("userProfileView").style.display = "block";
-                loadUserProfile(currentUsername);
+                switchTab('signalTab', document.querySelectorAll('.nav-item')[1]);
             }
         }
     }
@@ -374,29 +352,26 @@
             msg.style.display = "block";
             if(data.status === "success") {
                 isLoggedIn = true; 
-                currentUsername = user;
                 userPermissions.can_signal = data.can_signal;
                 userPermissions.can_history = data.can_history;
 
+                // Save session in localStorage
                 localStorage.setItem("gold_logged_in", "true");
-                localStorage.setItem("gold_username", user);
                 localStorage.setItem("gold_can_signal", data.can_signal);
                 localStorage.setItem("gold_can_history", data.can_history);
 
                 msg.innerText = "Login Successful!";
                 msg.style.color = "#00ff88";
                 setTimeout(() => {
-                    document.getElementById("loginView").style.display = "none";
                     if(user === "admin") {
                         isAdmin = true;
                         localStorage.setItem("gold_is_admin", "true");
+                        document.getElementById("loginView").style.display = "none";
                         document.getElementById("adminView").style.display = "block";
                         loadAdminUsers();
                     } else {
                         isAdmin = false;
                         localStorage.setItem("gold_is_admin", "false");
-                        document.getElementById("userProfileView").style.display = "block";
-                        loadUserProfile(user);
                         switchTab('signalTab', document.querySelectorAll('.nav-item')[1]);
                     }
                 }, 1000);
@@ -405,43 +380,6 @@
                 msg.style.color = "#ff3366";
             }
         });
-    }
-
-    function loadUserProfile(username) {
-        fetch(`${apiBaseUrl}/get_user_profile?username=${username}`)
-        .then(res => res.json())
-        .then(data => {
-            if(data.status === "success") {
-                document.getElementById("pUser").innerText = data.username;
-                document.getElementById("pIdCard").innerText = data.id_card || "N/A";
-                document.getElementById("pPhone").innerText = data.phone || "N/A";
-                document.getElementById("pStart").innerText = data.start_date || "N/A";
-                document.getElementById("pEnd").innerText = data.end_date || "N/A";
-                if(data.profile_pic) {
-                    document.getElementById("userProfileImg").src = data.profile_pic;
-                }
-            }
-        });
-    }
-
-    function uploadProfilePic(event) {
-        let file = event.target.files[0];
-        if(file) {
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                let base64Img = e.target.result;
-                document.getElementById("userProfileImg").src = base64Img;
-                
-                fetch(`${apiBaseUrl}/update_profile_pic`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username: currentUsername, profile_pic: base64Img})
-                }).then(res => res.json()).then(data => {
-                    alert(data.message);
-                });
-            }
-            reader.readAsDataURL(file);
-        }
     }
 
     function loadAdminUsers() {
@@ -454,10 +392,7 @@
                         let isCheckedActive = u.status === 'active' ? 'checked' : '';
                         container.innerHTML += `
                             <div class="user-row">
-                                <div style="display:flex; align-items:center; gap:10px; margin-bottom:5px;">
-                                    <img src="${u.profile_pic || 'https://via.placeholder.com/40'}" style="width:40px; height:40px; border-radius:50%; border:1px solid #00ffff; object-fit:cover;">
-                                    <div><b>User:</b> ${u.username} | <b>Pass:</b> ${u.password}</div>
-                                </div>
+                                <b>User:</b> ${u.username} | <b>Pass:</b> ${u.password}<br>
                                 <b>ID:</b> ${u.id_card} | <b>Phone:</b> ${u.phone}<br>
                                 <b>Start:</b> <input type="date" id="start_${u.username}" value="${u.start_date || ''}" style="background:#0d1424; color:white; border:1px solid #1f2a40; padding:2px; font-size:11px;"><br>
                                 <b>Expiry:</b> <input type="date" id="end_${u.username}" value="${u.end_date || ''}" style="background:#0d1424; color:white; border:1px solid #1f2a40; padding:2px; font-size:11px;"><br>
@@ -539,21 +474,15 @@
         });
     }
 
-    function logoutUser() {
+    function logoutAdmin() {
         isLoggedIn = false;
         isAdmin = false;
-        currentUsername = "";
         localStorage.removeItem("gold_logged_in");
         localStorage.removeItem("gold_is_admin");
-        localStorage.removeItem("gold_username");
         localStorage.removeItem("gold_can_signal");
         localStorage.removeItem("gold_can_history");
-        document.getElementById("userProfileView").style.display = "none";
+        document.getElementById("adminView").style.display = "none";
         document.getElementById("loginView").style.display = "block";
-    }
-
-    function logoutAdmin() {
-        logoutUser();
     }
 </script>
 </body>
