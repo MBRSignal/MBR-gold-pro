@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brothers FX - MBR Gold Pro</title>
+    <title>MBR Quotex Pro Signal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; }
@@ -11,72 +11,59 @@
         .phone-container { width: 100%; max-width: 400px; background-color: #0d1424; height: 100vh; max-height: 850px; position: relative; display: flex; flex-direction: column; border: 1px solid #1f2a40; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
         .header { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
         .logo-area { display: flex; align-items: center; gap: 10px; }
-        .logo-icon { width: 35px; height: 35px; background: radial-gradient(circle, #00d2ff, #0a1f3d); border-radius: 50%; border: 1px solid #00d2ff; }
+        .logo-icon { width: 35px; height: 35px; background: radial-gradient(circle, #00ff88, #0a1f3d); border-radius: 50%; border: 1px solid #00ff88; }
         .logo-text-container { display: flex; flex-direction: column; }
-        .logo-text { font-size: 24px; font-weight: 700; color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); font-style: italic; line-height: 1; }
-        .logo-text span { color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5); }
-        .logo-subtitle { font-size: 11px; font-weight: 700; color: #facc15; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; text-shadow: 0 0 8px rgba(250, 204, 21, 0.6); }
+        .logo-text { font-size: 22px; font-weight: 700; color: #00ff88; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); font-style: italic; line-height: 1; }
+        .logo-text span { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+        .logo-subtitle { font-size: 11px; font-weight: 700; color: #facc15; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
         .header-icons { display: flex; gap: 10px; align-items: center; }
-        .vip-badge { background: #1a2c42; color: #00ffff; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 1px solid #00ffff; }
-        .profile-icon { width: 30px; height: 30px; border: 1px solid #334155; border-radius: 6px; display: flex; justify-content: center; align-items: center; color: #00ffff; }
+        .vip-badge { background: #1a2c42; color: #00ff88; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 1px solid #00ff88; }
+        .profile-icon { width: 30px; height: 30px; border: 1px solid #334155; border-radius: 6px; display: flex; justify-content: center; align-items: center; color: #00ff88; }
         
         .content { padding: 0 20px; flex: 1; overflow-y: auto; padding-bottom: 80px; }
-        
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .dashboard-card { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 15px 20px; margin-bottom: 15px; }
-        .dashboard-card h3 { color: #00ffff; margin-bottom: 10px; font-size: 20px; display: flex; align-items: center; gap: 8px; }
+        .dashboard-card { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .dashboard-card h3 { color: #00ff88; margin-bottom: 12px; font-size: 18px; display: flex; align-items: center; gap: 8px; }
         
-        .news-item { background: #0d1424; border-left: 3px solid #facc15; padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #1f2a40; border-left-width: 3px; }
-        .news-time { font-size: 11px; color: #facc15; font-weight: 600; margin-bottom: 2px; }
+        .news-item { background: #0d1424; border-left: 3px solid #facc15; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #1f2a40; }
+        .news-time { font-size: 11px; color: #facc15; font-weight: 600; margin-bottom: 2px; display: flex; justify-content: space-between; }
         .news-title { font-size: 13px; color: white; font-weight: 600; }
 
         .login-input { width: 100%; padding: 10px; margin-bottom: 10px; background: #0d1424; border: 1px solid #1f2a40; color: white; border-radius: 6px; font-size: 15px; outline: none; }
-        .login-btn { width: 100%; background: #00ffff; color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; transition: 0.2s; }
-        .login-btn:active { transform: scale(0.98); }
+        .login-btn { width: 100%; background: #00ff88; color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; }
         
-        .history-card { background: #141e30; border-left: 4px solid #00ff88; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #1f2a40; border-left-width: 4px; }
-        .history-sell { border-left-color: #ff3366; }
-        
-        .dropdown { background: #141e30; border: 1px solid #1f2a40; padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
+        .dropdown { background: #141e30; border: 1px solid #1f2a40; padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; color: #00ff88; }
         .timeframes-scroll { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none; }
         .timeframes-scroll::-webkit-scrollbar { display: none; }
         .time-box { background: #141e30; border: 1px solid #1f2a40; padding: 8px 15px; border-radius: 6px; font-size: 14px; font-weight: 600; color: #94a3b8; cursor: pointer; min-width: 50px; text-align: center; }
-        .time-box.active { background: rgba(0, 255, 255, 0.1); border-color: #00ffff; color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
-        .lot-container { display: flex; justify-content: space-between; align-items: center; background: #141e30; border: 1px solid #1f2a40; padding: 10px 15px; border-radius: 8px; margin-bottom: 20px; }
-        .lot-controls { display: flex; align-items: center; gap: 10px; }
-        .lot-btn { background: #1f2a40; border: none; color: white; width: 30px; height: 30px; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .lot-input { width: 60px; background: transparent; border: none; color: white; font-size: 18px; font-weight: 700; text-align: center; outline: none; }
-        .generate-btn { width: 100%; background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%); color: #000; border: none; padding: 15px; border-radius: 8px; font-size: 20px; font-weight: 700; margin-bottom: 25px; box-shadow: 0 0 20px rgba(0, 242, 254, 0.4); cursor: pointer; }
+        .time-box.active { background: rgba(0, 255, 136, 0.1); border-color: #00ff88; color: #00ff88; }
+        
+        .generate-btn { width: 100%; background: linear-gradient(90deg, #00ff88 0%, #00ffff 100%); color: #000; border: none; padding: 15px; border-radius: 8px; font-size: 20px; font-weight: 700; margin-bottom: 20px; cursor: pointer; }
+        
         .pairs-scroll { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 5px; scrollbar-width: none; }
         .pairs-scroll::-webkit-scrollbar { display: none; }
         .pair-box { background: #141e30; border: 1px solid #1f2a40; padding: 10px; border-radius: 8px; min-width: 70px; text-align: center; font-size: 12px; color: #94a3b8; cursor: pointer; }
-        .pair-box.active { border-color: #00ffff; color: white; box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1); }
-        .signal-action { background: #141e30; border: 2px solid #1f2a40; border-radius: 12px; text-align: center; padding: 15px; margin-bottom: 20px; transition: 0.3s;}
-        .signal-action h2 { color: #ffffff; font-size: 30px; font-weight: 700; margin: 0; letter-spacing: 1px; }
-        .signal-sell { background: rgba(255, 51, 102, 0.05); border-color: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.3); }
-        .signal-sell h2 { text-shadow: 0 0 10px #ff3366; color: white; }
-        .signal-buy { background: rgba(0, 255, 136, 0.05); border-color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
-        .signal-buy h2 { text-shadow: 0 0 10px #00ff88; color: white; }
+        .pair-box.active { border-color: #00ff88; color: white; }
+        
+        .signal-action { background: #141e30; border: 2px solid #1f2a40; border-radius: 12px; text-align: center; padding: 15px; margin-bottom: 20px; }
+        .signal-action h2 { color: #ffffff; font-size: 22px; font-weight: 700; margin: 0; }
+        .signal-call { background: rgba(0, 255, 136, 0.1); border-color: #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+        .signal-put { background: rgba(255, 51, 102, 0.1); border-color: #ff3366; box-shadow: 0 0 15px rgba(255, 51, 102, 0.3); }
+        
         .details-table { background: #141e30; border: 1px solid #1f2a40; border-radius: 12px; padding: 0 15px; display: none; }
         .detail-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #1f2a40; font-size: 16px; }
         .detail-row:last-child { border-bottom: none; }
-        .text-cyan { color: #00ffff; text-shadow: 0 0 5px rgba(0,255,255,0.5); }
-        .text-red { color: #ff3366; }
-        .text-green { color: #00ff88; }
-        .status-dot { width: 8px; height: 8px; background-color: #00ff88; border-radius: 50%; box-shadow: 0 0 8px #00ff88; display: inline-block; margin-right: 5px;}
         
-        .bottom-nav { position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-around; background: #0d1424; padding: 15px 0; border-top: 1px solid #1f2a40; z-index: 10;}
-        .nav-item { text-align: center; color: #64748b; font-size: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+        .bottom-nav { position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-around; background: #0d1424; padding: 15px 0; border-top: 1px solid #1f2a40; z-index: 10; }
+        .nav-item { text-align: center; color: #64748b; font-size: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
+        .nav-item.active { color: #00ff88; }
         .nav-icon { font-size: 20px; }
         
-        .user-row { background: #0d1424; padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #1f2a40; font-size: 13px; }
-        
-        #noTradeBanner { background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 15px; display: none; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .user-row { background: #0d1424; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #1f2a40; font-size: 13px; }
+        #noTradeBanner { background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -87,119 +74,89 @@
             <div class="logo-icon"></div>
             <div class="logo-text-container">
                 <div class="logo-text">BROTHERS <span>FX</span></div>
-                <div class="logo-subtitle">MBR GOLD Pro Signal</div>
+                <div class="logo-subtitle">MBR Quotex Pro</div>
             </div>
         </div>
-        <div class="header-icons"><span class="vip-badge">VIP</span><div class="profile-icon">👤</div></div>
+        <div class="header-icons"><span class="vip-badge">VIP</span><div class="profile-icon" style="color:#00ff88; border-color:#00ff88;">👤</div></div>
     </div>
 
     <div class="content">
-        
         <!-- HOME TAB -->
         <div id="homeTab" class="tab-content">
             <div id="noTradeBanner">🚨 DON'T Trade News is starting 🚨</div>
-
             <div class="dashboard-card">
                 <h3>📊 Market Overview</h3>
                 <div style="display:flex; justify-content:space-around; margin-top:10px; text-align:center;">
-                    <div><div style="color:white; font-weight:bold; font-size:16px;">XAUUSD</div><div id="marketStatus" class="text-green" style="font-size:12px;">CHECKING...</div></div>
-                    <div><div style="color:white; font-weight:bold; font-size:16px;">EURUSD</div><div class="text-green" style="font-size:12px;" id="marketStatusEUR">ONLINE</div></div>
-                    <div><div style="color:white; font-weight:bold; font-size:16px;">GBPUSD</div><div class="text-green" style="font-size:12px;" id="marketStatusGBP">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold;">EURUSD</div><div id="marketStatus" style="font-size:12px; color:#00ff88;">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold;">GBPUSD</div><div style="font-size:12px; color:#00ff88;">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold;">USDJPY</div><div style="font-size:12px; color:#00ff88;">ONLINE</div></div>
                 </div>
             </div>
-
             <div class="dashboard-card">
                 <h3>📰 Live Forex Calendar</h3>
-                <div id="newsContainer" style="margin-top: 5px;">
-                    <div class="news-time" style="text-align:center;">Fetching live news...</div>
-                </div>
+                <div id="newsContainer"><div class="news-time">Fetching live news...</div></div>
             </div>
         </div>
 
         <!-- SIGNAL TAB -->
         <div id="signalTab" class="tab-content active">
-            <div class="dropdown"><span id="dropdownText">🪙 GOLD (XAU/USD)</span><span>▼</span></div>
-            <div class="timeframes-scroll" id="timeframeContainer">
-                <div class="time-box" onclick="selectTimeframe(this)">M1</div>
-                <div class="time-box" onclick="selectTimeframe(this)">M5</div>
-                <div class="time-box active" onclick="selectTimeframe(this)">M15</div>
-                <div class="time-box" onclick="selectTimeframe(this)">M30</div>
-                <div class="time-box" onclick="selectTimeframe(this)">H1</div>
-                <div class="time-box" onclick="selectTimeframe(this)">H4</div>
+            <div class="dropdown"><span id="dropdownText">🇪🇺 EUR/USD (Live)</span><span>▼</span></div>
+            <div class="timeframes-scroll">
+                <div class="time-box" onclick="selectTimeframe(this, 'S30')">30s</div>
+                <div class="time-box active" onclick="selectTimeframe(this, 'M1')">1m</div>
+                <div class="time-box" onclick="selectTimeframe(this, 'M5')">5m</div>
+                <div class="time-box" onclick="selectTimeframe(this, 'M15')">15m</div>
             </div>
 
-            <div class="lot-container">
-                <span style="color: #94a3b8; font-weight: 600; font-size: 14px;">Lot Size (Volume)</span>
-                <div class="lot-controls">
-                    <button class="lot-btn" onclick="changeLot(-0.01)">-</button>
-                    <input type="number" id="lotSize" class="lot-input" value="0.01" step="0.01" min="0.01" readonly>
-                    <button class="lot-btn" onclick="changeLot(0.01)">+</button>
-                </div>
-            </div>
-
-            <button class="generate-btn" id="generateBtn" onclick="generateSignal()">GENERATE SIGNAL</button>
+            <button class="generate-btn" id="generateBtn" onclick="generateSignal()">GET QUOTEX SIGNAL</button>
 
             <div class="pairs-scroll">
-                <div class="pair-box active" onclick="selectPair(this, 'XAUUSD', '🪙 GOLD (XAU/USD)')">🪙<br>XAUUSD</div>
-                <div class="pair-box" onclick="selectPair(this, 'EURUSD', '🇪🇺 EUR/USD')">🇪🇺<br>EURUSD</div>
+                <div class="pair-box active" onclick="selectPair(this, 'EURUSD', '🇪🇺 EUR/USD')">🇪🇺<br>EURUSD</div>
                 <div class="pair-box" onclick="selectPair(this, 'GBPUSD', '🇬🇧 GBP/USD')">🇬🇧<br>GBPUSD</div>
                 <div class="pair-box" onclick="selectPair(this, 'USDJPY', '🇯🇵 USD/JPY')">🇯🇵<br>USDJPY</div>
+                <div class="pair-box" onclick="selectPair(this, 'AUDUSD', '🇦🇺 AUD/USD')">🇦🇺<br>AUDUSD</div>
             </div>
 
             <div class="signal-action" id="signalBox"><h2 id="signalText">WAITING...</h2></div>
 
             <div class="details-table" id="detailsTable">
-                <div class="detail-row"><span style="color: #94a3b8;">Pair</span><span style="font-weight: 600;" id="displayPair">GOLD (XAUUSD)</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Pair</span><span style="font-weight: 600;" id="displayPair">EURUSD</span></div>
                 <div class="detail-row"><span style="color: #94a3b8;">Entry Price</span><span style="font-weight: 600;" id="entryValue">0.00</span></div>
-                <div class="detail-row"><span style="color: #94a3b8;">Stop Loss (SL)</span><span class="text-red" style="font-weight: 600;" id="slValue">0.00</span></div>
-                <div class="detail-row"><span style="color: #94a3b8;">Take Profit (TP)</span><span class="text-green" style="font-weight: 600;" id="tpValue">0.00</span></div>
-                <div class="detail-row"><span style="color: #94a3b8;">Status</span><span style="font-weight: 600;"><span class="status-dot" id="statusDot"></span><span id="statusValue">ACTIVE</span></span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Signal Type</span><span style="color:#00ff88; font-weight: 600;" id="signalTypeVal">CALL (UP)</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Status</span><span style="font-weight: 600;" id="statusValue">ACTIVE</span></div>
             </div>
         </div>
 
         <!-- HISTORY TAB -->
         <div id="historyTab" class="tab-content">
             <h2 style="text-align:center; margin-bottom: 20px; font-size: 24px;">Signal History</h2>
-            <div id="historyList">
-                <p id="noHistoryText" style="text-align:center; color:#94a3b8; font-size: 14px; margin-top: 30px;">No signals generated yet.</p>
-            </div>
+            <div id="historyList"><p id="noHistoryText" style="text-align:center; color:#94a3b8;">No signals yet.</p></div>
         </div>
 
-        <!-- PROFILE / LOGIN TAB -->
+        <!-- PROFILE TAB -->
         <div id="profileTab" class="tab-content">
-            <div id="loginView" class="dashboard-card" style="text-align: left;">
-                <h2 style="margin-bottom: 5px; text-align: center;">VIP Login</h2>
-                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px; text-align: center;">Secure Device Authentication</p>
+            <div id="loginView" class="dashboard-card">
+                <h2 style="margin-bottom: 5px; text-align: center; color:#00ff88;">Quotex Admin Login</h2>
                 <input type="text" id="loginUser" class="login-input" placeholder="Username">
                 <input type="password" id="loginPass" class="login-input" placeholder="Password">
-                <button class="login-btn" id="loginBtnUI" onclick="realLogin()">LOGIN</button>
-                <p id="loginMsg" style="text-align:center; margin-top:15px; font-size: 14px; display:none;"></p>
+                <button class="login-btn" onclick="realLogin()">LOGIN</button>
+                <p id="loginMsg" style="text-align:center; margin-top:15px; display:none;"></p>
             </div>
-
-            <div id="adminView" class="dashboard-card" style="display:none; text-align: left;">
-                <h3 style="color:#00ff88; margin-bottom:10px;">👑 Admin Panel</h3>
-                <p style="font-size:12px; color:#94a3b8; margin-bottom:15px;">Manage users, passwords & permissions.</p>
-                
-                <h4 style="font-size:14px; color:#00ffff; margin-bottom:8px;">Add New User</h4>
+            
+            <div id="adminView" class="dashboard-card" style="display:none;">
+                <h3 style="color:#00ff88;">👑 Quotex Admin Panel</h3>
                 <input type="text" id="newUsername" class="login-input" placeholder="New Username">
                 <input type="password" id="newPassword" class="login-input" placeholder="New Password">
-                <div style="font-size:12px; margin-bottom:10px; color:#94a3b8;">
-                    <label><input type="checkbox" id="newSignalPerm" checked> Allow Signal</label> &nbsp;&nbsp;
-                    <label><input type="checkbox" id="newHistoryPerm" checked> Allow History</label>
-                </div>
-                <button class="login-btn" style="background:#00ff88; margin-bottom:15px;" onclick="createNewUser()">CREATE USER</button>
-                <p id="adminMsg" style="font-size:12px; margin-bottom:10px; display:none;"></p>
-
-                <h4 style="font-size:14px; color:#00ffff; margin-bottom:8px;">Registered Users List</h4>
-                <div id="usersListContainer" style="max-height:250px; overflow-y:auto;"></div>
-                
-                <button class="login-btn" style="background:#ff3366; color:white; margin-top:15px;" onclick="logoutAdmin()">LOGOUT ADMIN</button>
+                <input type="text" id="newIdCard" class="login-input" placeholder="ID Card Number">
+                <input type="text" id="newPhone" class="login-input" placeholder="Phone Number">
+                <button class="login-btn" style="background:#00ff88;" onclick="createNewUser()">CREATE USER</button>
+                <p id="adminMsg" style="font-size:12px; margin-top:5px; display:none;"></p>
+                <div id="usersListContainer" style="max-height:200px; overflow-y:auto; margin-top:10px;"></div>
+                <button class="login-btn" style="background:#ff3366; margin-top:15px;" onclick="logoutAdmin()">LOGOUT</button>
             </div>
         </div>
-
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
     <div class="bottom-nav">
         <div class="nav-item" onclick="switchTab('homeTab', this)"><span class="nav-icon">⊞</span><span>Home</span></div>
         <div class="nav-item active" id="navSignal" onclick="switchTab('signalTab', this)"><span class="nav-icon">⚡</span><span>Signal</span></div>
@@ -210,15 +167,13 @@
 
 <script>
     const apiBaseUrl = "https://Bilal1212.pythonanywhere.com"; 
+    let currentTimeframe = "M1";
+    let currentPair = "EURUSD";
+    let isLoggedIn = false; 
+    let isAdmin = false;    
 
-    let currentTimeframe = "M15";
-    let currentPair = "XAUUSD";
-    
-    let deviceId = localStorage.getItem("device_id");
-    if(!deviceId) {
-        deviceId = 'dev_' + Math.random().toString(36).substring(2, 15);
-        localStorage.setItem("device_id", deviceId);
-    }
+    let deviceId = localStorage.getItem("quotex_device_id") || ('qdev_' + Math.random().toString(36).substring(2, 15));
+    localStorage.setItem("quotex_device_id", deviceId);
 
     window.onload = function() {
         checkMarketStatus();
@@ -226,77 +181,33 @@
     }
 
     function checkMarketStatus() {
-        fetch(`${apiBaseUrl}/market_status`)
-        .then(res => res.json())
-        .then(data => {
-            let els = [document.getElementById("marketStatus"), document.getElementById("marketStatusEUR"), document.getElementById("marketStatusGBP")];
-            els.forEach(el => {
-                if(data.status === "ONLINE") {
-                    el.innerText = "ONLINE";
-                    el.className = "text-green";
-                } else {
-                    el.innerText = "CLOSED";
-                    el.className = "text-red";
-                }
-            });
-        }).catch(err => console.log(err));
-    }
-
-    function fetchLiveNews() {
-        let container = document.getElementById("newsContainer");
-        fetch(`${apiBaseUrl}/get_news`)
-        .then(res => res.json())
-        .then(data => {
-            if(data.status === "success" && data.news.length > 0) {
-                container.innerHTML = "";
-                let now = new Date().getTime();
-                let showNoTradeAlert = false;
-
-                data.news.forEach(item => {
-                    let newsTime = new Date(item.time).getTime();
-                    let diffMinutes = (newsTime - now) / (1000 * 60);
-
-                    if(diffMinutes >= 0 && diffMinutes <= 5) {
-                        showNoTradeAlert = true;
-                    }
-
-                    let dateObj = new Date(item.time);
-                    let timeString = isNaN(dateObj) ? item.time : dateObj.toLocaleString('en-US', { timeZone: 'Asia/Karachi', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + " PKT";
-                    
-                    container.innerHTML += `
-                        <div class="news-item">
-                            <div class="news-time">📅 ${timeString} (${item.currency})</div>
-                            <div class="news-title">${item.title}</div>
-                        </div>
-                    `;
-                });
-
-                let banner = document.getElementById("noTradeBanner");
-                if(showNoTradeAlert) {
-                    banner.style.display = "block";
-                } else {
-                    banner.style.display = "none";
-                }
-            } else {
-                container.innerHTML = "<div class='news-time'>No live news fetched yet.</div>";
-            }
-        })
-        .catch(err => {
-            container.innerHTML = "<div class='news-time'>Error loading news feed.</div>";
+        fetch(`${apiBaseUrl}/market_status`).then(res => res.json()).then(data => {
+            document.getElementById("marketStatus").innerText = data.status;
+            document.getElementById("marketStatus").style.color = data.status === "ONLINE" ? "#00ff88" : "#ff3366";
         });
     }
 
-    function switchTab(tabId, element) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        element.classList.add('active');
+    function fetchLiveNews() {
+        fetch(`${apiBaseUrl}/get_news`).then(res => res.json()).then(data => {
+            let container = document.getElementById("newsContainer");
+            if(data.status === "success" && data.news.length > 0) {
+                container.innerHTML = "";
+                let now = new Date().getTime();
+                let showAlert = false;
+                data.news.forEach(item => {
+                    let diff = (new Date(item.time).getTime() - now) / (1000 * 60);
+                    if(diff >= 0 && diff <= 5) showAlert = true;
+                    container.innerHTML += `<div class="news-item"><div class="news-time"><span>📅 ${item.time}</span><span style="color:#00ff88;">${item.currency}</span></div><div class="news-title">${item.title}</div></div>`;
+                });
+                document.getElementById("noTradeBanner").style.display = showAlert ? "block" : "none";
+            }
+        });
     }
 
-    function selectTimeframe(element) {
+    function selectTimeframe(element, tf) {
         document.querySelectorAll(".time-box").forEach(b => b.classList.remove("active"));
         element.classList.add("active");
-        currentTimeframe = element.innerText;
+        currentTimeframe = tf;
     }
 
     function selectPair(element, pairCode, pairName) {
@@ -306,49 +217,92 @@
         document.getElementById("dropdownText").innerText = pairName;
     }
 
-    function changeLot(amount) {
-        let lotInput = document.getElementById("lotSize");
-        let newVal = (parseFloat(lotInput.value) + amount).toFixed(2);
-        if (newVal >= 0.01) lotInput.value = newVal;
+    function switchTab(tabId, element) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        element.classList.add('active');
+    }
+
+    function generateSignal() {
+        if (!isLoggedIn) {
+            alert("For Generate signal Contact with Admin for user name and password. Contact NO: 03064975019 / 03040693487");
+            switchTab('profileTab', document.querySelectorAll('.nav-item')[3]);
+            return;
+        }
+
+        let btn = document.getElementById("generateBtn");
+        let signalBox = document.getElementById("signalBox");
+        let signalText = document.getElementById("signalText");
+
+        let preAlertTime = (currentTimeframe === "S30") ? 3000 : 5000;
+        let alertMessage = (currentTimeframe === "S30") ? "PRE-ALERT: 3s TO NEXT CANDLE..." : "PRE-ALERT: 5s TO NEXT CANDLE...";
+
+        btn.innerText = "WAITING FOR TIMING...";
+        btn.disabled = true;
+        signalBox.className = "signal-action";
+        signalText.innerText = alertMessage;
+
+        setTimeout(() => {
+            fetch(`${apiBaseUrl}/get_signal?tf=${currentTimeframe}&pair=${currentPair}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.error) throw new Error(data.error);
+
+                if (data.direction.includes("CALL")) signalBox.className = "signal-action signal-call";
+                else signalBox.className = "signal-action signal-put";
+
+                signalText.innerText = data.direction;
+                document.getElementById("displayPair").innerText = data.pair;
+                document.getElementById("entryValue").innerText = data.entry_price;
+                document.getElementById("signalTypeVal").innerText = data.direction;
+                document.getElementById("statusValue").innerText = data.status;
+
+                let historyList = document.getElementById("historyList");
+                if(document.getElementById("noHistoryText")) document.getElementById("noHistoryText").style.display = "none";
+                let timeNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+
+                historyList.insertAdjacentHTML('afterbegin', `
+                    <div class="history-card" style="background:#141e30; padding:10px; border-radius:6px; margin-bottom:8px; border-left:4px solid #00ff88;">
+                        <div><b>${data.pair} (${currentTimeframe})</b><br><span style="color:#00ff88;">${data.direction} @ ${data.entry_price}</span></div>
+                        <div style="font-size:12px; color:#94a3b8; text-align:right;">${timeNow}</div>
+                    </div>
+                `);
+
+                document.getElementById("detailsTable").style.display = "block";
+                btn.innerText = "GET QUOTEX SIGNAL";
+                btn.disabled = false;
+            })
+            .catch(err => {
+                signalText.innerText = "ERROR / CLOSED";
+                btn.innerText = "TRY AGAIN";
+                btn.disabled = false;
+            });
+        }, preAlertTime);
     }
 
     function realLogin() {
         let user = document.getElementById("loginUser").value;
         let pass = document.getElementById("loginPass").value;
-        let msg = document.getElementById("loginMsg");
-        let btn = document.getElementById("loginBtnUI");
-
-        if(!user || !pass) {
-            msg.innerText = "Please enter username and password.";
-            msg.style.color = "#facc15";
-            msg.style.display = "block";
-            return;
-        }
-
-        btn.innerText = "CHECKING...";
-        btn.disabled = true;
-
         fetch(`${apiBaseUrl}/login`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: user, password: pass, device_id: deviceId })
-        })
-        .then(res => res.json())
-        .then(data => {
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({username: user, password: pass, device_id: deviceId})
+        }).then(res => res.json()).then(data => {
+            let msg = document.getElementById("loginMsg");
             msg.style.display = "block";
             if(data.status === "success") {
+                isLoggedIn = true; 
                 msg.innerText = "Login Successful!";
                 msg.style.color = "#00ff88";
-                
-                if(data.can_signal == 0) document.getElementById("navSignal").style.display = "none";
-                if(data.can_history == 0) document.getElementById("navHistory").style.display = "none";
-
                 setTimeout(() => {
                     if(user === "admin") {
+                        isAdmin = true;
                         document.getElementById("loginView").style.display = "none";
                         document.getElementById("adminView").style.display = "block";
                         loadAdminUsers();
                     } else {
+                        isAdmin = false;
                         switchTab('signalTab', document.querySelectorAll('.nav-item')[1]);
                     }
                 }, 1000);
@@ -356,211 +310,77 @@
                 msg.innerText = data.message;
                 msg.style.color = "#ff3366";
             }
-            btn.innerText = "LOGIN";
-            btn.disabled = false;
-        })
-        .catch(err => {
-            msg.innerText = "Connection Error!";
-            msg.style.color = "#ff3366";
-            msg.style.display = "block";
-            btn.innerText = "LOGIN";
-            btn.disabled = false;
         });
     }
 
     function loadAdminUsers() {
-        fetch(`${apiBaseUrl}/get_users`)
-        .then(res => res.json())
-        .then(data => {
+        fetch(`${apiBaseUrl}/get_users`).then(res => res.json()).then(data => {
             if(data.status === "success") {
                 let container = document.getElementById("usersListContainer");
                 container.innerHTML = "";
                 data.users.forEach(u => {
-                    let checkedStatus = u.status === "active" ? "checked" : "";
-                    let sigCheck = u.can_signal == 1 ? "checked" : "";
-                    let histCheck = u.can_history == 1 ? "checked" : "";
-                    
-                    let deleteBtn = u.username !== "admin" ? `<button onclick="deleteUser('${u.username}')" style="background:#ff3366; color:white; border:none; padding:4px 8px; font-weight:bold; border-radius:4px; cursor:pointer; font-size:11px;">Delete</button>` : '';
-
-                    container.innerHTML += `
-                        <div class="user-row">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:5px; align-items:center;">
-                                <div><b>User: ${u.username}</b> <span style="color:#00ffff; font-size:11px; margin-left:5px;">(Pass: ${u.password})</span></div>
-                                ${deleteBtn}
-                            </div>
-                            <div style="display:flex; gap:5px; margin-bottom:5px;">
-                                <input type="text" id="pwd_${u.username}" placeholder="New Password" style="flex:1; padding:4px; background:#141e30; border:1px solid #1f2a40; color:white; border-radius:4px; font-size:12px;">
-                                <button onclick="changePassword('${u.username}')" style="background:#00ffff; border:none; padding:4px 8px; font-weight:bold; border-radius:4px; cursor:pointer; font-size:11px;">Update</button>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; font-size:11px; color:#94a3b8;">
-                                <label><input type="checkbox" id="stat_${u.username}" ${checkedStatus} onclick="updateUser('${u.username}')"> Active</label>
-                                <label><input type="checkbox" id="sig_${u.username}" ${sigCheck} onclick="updateUser('${u.username}')"> Signal</label>
-                                <label><input type="checkbox" id="hist_${u.username}" ${histCheck} onclick="updateUser('${u.username}')"> History</label>
-                            </div>
-                        </div>
-                    `;
+                    if(u.username !== "admin") {
+                        container.innerHTML += `<div class="user-row"><b>${u.username}</b> <button onclick="deleteUser('${u.username}')" style="background:#ff3366; border:none; color:white; padding:2px 6px; float:right; border-radius:4px;">Delete</button></div>`;
+                    }
                 });
             }
         });
     }
 
     function deleteUser(username) {
-        if(!confirm(`Are you sure you want to delete user '${username}'?`)) return;
-
-        fetch(`${apiBaseUrl}/delete_user`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username })
-        })
-        .then(res => res.json())
-        .then(data => {
-            let msg = document.getElementById("adminMsg");
-            msg.style.display = "block";
-            msg.innerText = data.message;
-            msg.style.color = data.status === "success" ? "#00ff88" : "#ff3366";
-            loadAdminUsers();
-        });
-    }
-
-    function changePassword(username) {
-        let new_password = document.getElementById(`pwd_${username}`).value;
-        let msg = document.getElementById("adminMsg");
-        if(!new_password) {
-            msg.style.display = "block";
-            msg.innerText = "Enter new password first!";
-            msg.style.color = "#facc15";
+        if (!isAdmin) {
+            alert("Only Admin can delete users!");
             return;
         }
-
-        fetch(`${apiBaseUrl}/change_password`, {
+        fetch(`${apiBaseUrl}/delete_user`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, new_password })
-        })
-        .then(res => res.json())
-        .then(data => {
-            msg.style.display = "block";
-            msg.innerText = data.message;
-            msg.style.color = "#00ff88";
-            loadAdminUsers();
-        });
-    }
-
-    function updateUser(username) {
-        let status = document.getElementById(`stat_${username}`).checked ? "active" : "disabled";
-        let can_signal = document.getElementById(`sig_${username}`).checked ? 1 : 0;
-        let can_history = document.getElementById(`hist_${username}`).checked ? 1 : 0;
-
-        fetch(`${apiBaseUrl}/update_user`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, status, can_signal, can_history })
-        }).then(res => res.json()).then(data => {
-            let msg = document.getElementById("adminMsg");
-            msg.style.display = "block";
-            msg.innerText = data.message;
-            msg.style.color = "#00ff88";
-        });
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({username})
+        }).then(res => res.json()).then(data => loadAdminUsers());
     }
 
     function createNewUser() {
+        if (!isAdmin) {
+            alert("Only Admin can create new users!");
+            return;
+        }
         let user = document.getElementById("newUsername").value;
         let pass = document.getElementById("newPassword").value;
-        let can_signal = document.getElementById("newSignalPerm").checked ? 1 : 0;
-        let can_history = document.getElementById("newHistoryPerm").checked ? 1 : 0;
-        let msg = document.getElementById("adminMsg");
+        let idCard = document.getElementById("newIdCard").value;
+        let phone = document.getElementById("newPhone").value;
 
-        if(!user || !pass) {
+        if (!user || !pass || !idCard || !phone) {
+            let msg = document.getElementById("adminMsg");
             msg.style.display = "block";
-            msg.innerText = "Enter username & password.";
-            msg.style.color = "#facc15";
+            msg.innerText = "Please fill all fields (Username, Password, ID Card, Phone)!";
+            msg.style.color = "#ff3366";
             return;
         }
 
         fetch(`${apiBaseUrl}/create_user`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: user, password: pass, can_signal, can_history })
-        })
-        .then(res => res.json())
-        .then(data => {
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({username: user, password: pass, id_card: idCard, phone: phone})
+        }).then(res => res.json()).then(data => {
+            let msg = document.getElementById("adminMsg");
             msg.style.display = "block";
             msg.innerText = data.message;
             msg.style.color = data.status === "success" ? "#00ff88" : "#ff3366";
             if(data.status === "success") {
                 document.getElementById("newUsername").value = "";
                 document.getElementById("newPassword").value = "";
+                document.getElementById("newIdCard").value = "";
+                document.getElementById("newPhone").value = "";
                 loadAdminUsers();
             }
         });
     }
 
     function logoutAdmin() {
+        isLoggedIn = false;
+        isAdmin = false;
         document.getElementById("adminView").style.display = "none";
         document.getElementById("loginView").style.display = "block";
-        document.getElementById("loginUser").value = "";
-        document.getElementById("loginPass").value = "";
-    }
-
-    function generateSignal() {
-        let btn = document.getElementById("generateBtn");
-        let signalBox = document.getElementById("signalBox");
-        let signalText = document.getElementById("signalText");
-
-        btn.innerText = "FETCHING LIVE DATA...";
-        btn.disabled = true;
-        signalBox.className = "signal-action";
-        signalText.innerText = "ANALYZING...";
-        document.getElementById("detailsTable").style.display = "none";
-
-        fetch(`${apiBaseUrl}/get_signal?tf=${currentTimeframe}&pair=${currentPair}`)
-        .then(res => res.json())
-        .then(data => {
-            if(data.error) throw new Error(data.error);
-
-            if (data.direction.includes("BUY")) signalBox.className = "signal-action signal-buy";
-            else if (data.direction.includes("SELL")) signalBox.className = "signal-action signal-sell";
-            
-            signalText.innerText = data.direction;
-            document.getElementById("displayPair").innerText = data.pair;
-            document.getElementById("entryValue").innerText = data.entry_price;
-            document.getElementById("slValue").innerText = data.stop_loss;
-            document.getElementById("tpValue").innerText = data.take_profit;
-            
-            let statVal = document.getElementById("statusValue");
-            let dot = document.getElementById("statusDot");
-            statVal.innerText = data.status || "ACTIVE";
-
-            if(data.status === "STRONG TREND") { statVal.style.color = "#00ff88"; dot.style.backgroundColor = "#00ff88"; dot.style.boxShadow = "0 0 8px #00ff88"; } 
-            else if(data.status === "WEAK TREND") { statVal.style.color = "#facc15"; dot.style.backgroundColor = "#facc15"; dot.style.boxShadow = "0 0 8px #facc15"; } 
-            else { statVal.style.color = "#ff3366"; dot.style.backgroundColor = "#ff3366"; dot.style.boxShadow = "0 0 8px #ff3366"; }
-
-            let historyList = document.getElementById("historyList");
-            if(document.getElementById("noHistoryText")) document.getElementById("noHistoryText").style.display = "none";
-            
-            let timeNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            let isBuy = data.direction.includes("BUY");
-            let hBorder = isBuy ? "" : "history-sell";
-            let hColor = isBuy ? "text-green" : "text-red";
-            
-            historyList.insertAdjacentHTML('afterbegin', `
-                <div class="history-card ${hBorder}">
-                    <div><div style="font-weight:bold; color:white;">${data.pair} <span style="font-size: 12px; color:#00ffff;">(${currentTimeframe})</span></div>
-                    <div class="${hColor}" style="font-size: 14px; font-weight:bold; margin-top:2px;">${data.direction} @ ${data.entry_price}</div></div>
-                    <div style="text-align:right;"><div style="font-size: 12px; color:#94a3b8; margin-bottom:2px;">${timeNow}</div>
-                    <div style="font-size: 14px; font-weight:bold; color:#facc15;">TP: ${data.take_profit}</div></div>
-                </div>
-            `);
-
-            document.getElementById("detailsTable").style.display = "block";
-            btn.innerText = "GENERATE SIGNAL";
-            btn.disabled = false;
-        })
-        .catch(error => {
-            signalText.innerText = "MARKET CLOSED / ERROR";
-            btn.innerText = "TRY AGAIN";
-            btn.disabled = false;
-        });
     }
 </script>
 </body>
