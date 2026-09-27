@@ -96,14 +96,14 @@
             <div class="dashboard-card">
                 <h3>📊 Market Overview</h3>
                 <div style="display:flex; justify-content:space-around; margin-top:10px; text-align:center;">
-                    <div><div style="color:white; font-weight:bold;">XAUUSD</div><div id="marketStatus" style="font-size:12px; color:#00ff88;">ONLINE</div></div>
-                    <div><div style="color:white; font-weight:bold;">EURUSD</div><div style="font-size:12px; color:#00ff88;">ONLINE</div></div>
-                    <div><div style="color:white; font-weight:bold;">GBPUSD</div><div style="font-size:12px; color:#00ff88;">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold;">XAUUSD</div><div id="marketStatus" class="text-green" style="font-size:12px;">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold;">EURUSD</div><div class="text-green" style="font-size:12px;">ONLINE</div></div>
+                    <div><div style="color:white; font-weight:bold;">GBPUSD</div><div class="text-green" style="font-size:12px;">ONLINE</div></div>
                 </div>
             </div>
             <div class="dashboard-card">
                 <h3>📰 Live Forex Calendar</h3>
-                <div id="newsContainer"><div class="news-time" style="text-align:center; color:#94a3b8;">Loading news...</div></div>
+                <div id="newsContainer"><div class="news-time" style="text-align:center; color:#94a3b8;">Fetching live news...</div></div>
             </div>
         </div>
 
@@ -142,9 +142,9 @@
             <div class="details-table" id="detailsTable">
                 <div class="detail-row"><span style="color: #94a3b8;">Pair</span><span style="font-weight: 600;" id="displayPair">GOLD (XAUUSD)</span></div>
                 <div class="detail-row"><span style="color: #94a3b8;">Entry Price</span><span style="font-weight: 600;" id="entryValue">0.00</span></div>
-                <div class="detail-row"><span style="color: #94a3b8;">Stop Loss (SL)</span><span style="color:#ff3366; font-weight: 600;" id="slValue">0.00</span></div>
-                <div class="detail-row"><span style="color: #94a3b8;">Take Profit (TP)</span><span style="color:#00ff88; font-weight: 600;" id="tpValue">0.00</span></div>
-                <div class="detail-row"><span style="color: #94a3b8;">Status</span><span style="font-weight: 600;" id="statusValue">ACTIVE</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Stop Loss (SL)</span><span class="text-red" style="font-weight: 600;" id="slValue">0.00</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Take Profit (TP)</span><span class="text-green" style="font-weight: 600;" id="tpValue">0.00</span></div>
+                <div class="detail-row"><span style="color: #94a3b8;">Status</span><span style="font-weight: 600;"><span class="status-dot" id="statusDot"></span><span id="statusValue">ACTIVE</span></span></div>
             </div>
         </div>
 
@@ -227,6 +227,8 @@
     localStorage.setItem("device_id", deviceId);
 
     window.onload = function() {
+        checkMarketStatus();
+        fetchLiveNews();
         let today = new Date().toISOString().split('T')[0];
         if(document.getElementById("newStartDate")) document.getElementById("newStartDate").value = today;
 
@@ -240,34 +242,31 @@
                 loadUserProfile(currentUsername);
             }
         }
-        
-        // Background sync to prevent blocking UI
-        setTimeout(() => {
-            checkMarketStatus();
-            fetchLiveNews();
-        }, 500);
     }
 
     function checkMarketStatus() {
         fetch(`${apiBaseUrl}/market_status`).then(res => res.json()).then(data => {
             let statusEl = document.getElementById("marketStatus");
-            if(statusEl) {
-                statusEl.innerText = data.status;
-                statusEl.style.color = data.status === "ONLINE" ? "#00ff88" : "#ff3366";
-            }
-        }).catch(err => console.log(err));
+            statusEl.innerText = data.status;
+            statusEl.className = data.status === "ONLINE" ? "text-green" : "text-red";
+        });
     }
 
     function fetchLiveNews() {
         fetch(`${apiBaseUrl}/get_news`).then(res => res.json()).then(data => {
             let container = document.getElementById("newsContainer");
-            if(container && data.status === "success" && data.news.length > 0) {
+            if(data.status === "success" && data.news.length > 0) {
                 container.innerHTML = "";
+                let now = new Date().getTime();
+                let showAlert = false;
                 data.news.forEach(item => {
+                    let diff = (new Date(item.time).getTime() - now) / (1000 * 60);
+                    if(diff >= 0 && diff <= 5) showAlert = true;
                     container.innerHTML += `<div class="news-item"><div class="news-time"><span>📅 ${item.time}</span><span style="color:#00ffff;">${item.currency}</span></div><div class="news-title">${item.title}</div></div>`;
                 });
+                document.getElementById("noTradeBanner").style.display = showAlert ? "block" : "none";
             }
-        }).catch(err => console.log(err));
+        });
     }
 
     function selectTimeframe(element) {
@@ -294,10 +293,6 @@
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         element.classList.add('active');
-
-        if(tabId === 'profileTab' && isLoggedIn && !isAdmin) {
-            loadUserProfile(currentUsername);
-        }
     }
 
     function generateSignal() {
@@ -337,7 +332,7 @@
             document.getElementById("tpValue").innerText = data.take_profit;
             
             let statVal = document.getElementById("statusValue");
-            if(statVal) statVal.innerText = data.status || "ACTIVE";
+            statVal.innerText = data.status || "ACTIVE";
 
             if (userPermissions.can_history === 1) {
                 let historyList = document.getElementById("historyList");
