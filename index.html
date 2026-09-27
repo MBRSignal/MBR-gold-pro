@@ -68,7 +68,7 @@
         .nav-item.active { color: #00ffff; }
         .nav-icon { font-size: 20px; }
         
-        .user-row { background: #0d1424; padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #1f2a40; font-size: 13px; }
+        .user-row { background: #0d1424; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #1f2a40; font-size: 13px; }
         #noTradeBanner { background: rgba(255, 51, 102, 0.2); border: 1px solid #ff3366; color: #ff3366; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 15px; display: none; }
     </style>
 </head>
@@ -165,9 +165,13 @@
             <div id="adminView" class="dashboard-card" style="display:none;">
                 <h3 style="color:#00ff88; margin-bottom:10px;">👑 Admin Panel</h3>
                 <input type="text" id="newUsername" class="login-input" placeholder="New Username">
-                <input type="password" id="newPassword" class="login-input" placeholder="New Password">
+                <input type="text" id="newPassword" class="login-input" placeholder="Password (Visible)">
                 <input type="text" id="newIdCard" class="login-input" placeholder="ID Card Number">
                 <input type="text" id="newPhone" class="login-input" placeholder="Phone Number">
+                <div style="font-size:12px; color:#94a3b8; margin-bottom:5px;">Starting Date:</div>
+                <input type="date" id="newStartDate" class="login-input">
+                <div style="font-size:12px; color:#94a3b8; margin-bottom:5px;">Ending Date (Expiry):</div>
+                <input type="date" id="newEndDate" class="login-input">
                 <button class="login-btn" style="background:#00ff88; margin-bottom:15px;" onclick="createNewUser()">CREATE USER</button>
                 <p id="adminMsg" style="font-size:12px; margin-bottom:10px; display:none;"></p>
                 <div id="usersListContainer" style="max-height:250px; overflow-y:auto;"></div>
@@ -189,7 +193,8 @@
     let currentTimeframe = "M15";
     let currentPair = "XAUUSD";
     let isLoggedIn = false; 
-    let isAdmin = false;    
+    let isAdmin = false;
+    let userPermissions = { can_signal: 1, can_history: 1 };
 
     let deviceId = localStorage.getItem("device_id") || ('dev_' + Math.random().toString(36).substring(2, 15));
     localStorage.setItem("device_id", deviceId);
@@ -197,6 +202,8 @@
     window.onload = function() {
         checkMarketStatus();
         fetchLiveNews();
+        let today = new Date().toISOString().split('T')[0];
+        if(document.getElementById("newStartDate")) document.getElementById("newStartDate").value = today;
     }
 
     function checkMarketStatus() {
@@ -251,10 +258,14 @@
     }
 
     function generateSignal() {
-        // Login check error message with phone numbers
         if (!isLoggedIn) {
             alert("For Generate signal Contact with Admin for user name and password. Contact NO: 03064975019 / 03040693487");
             switchTab('profileTab', document.querySelectorAll('.nav-item')[3]);
+            return;
+        }
+
+        if (userPermissions.can_signal === 0) {
+            alert("Your Signal access has been disabled by Admin!");
             return;
         }
 
@@ -283,25 +294,24 @@
             document.getElementById("tpValue").innerText = data.take_profit;
             
             let statVal = document.getElementById("statusValue");
-            let dot = document.getElementById("statusDot");
             statVal.innerText = data.status || "ACTIVE";
 
-            let historyList = document.getElementById("historyList");
-            if(document.getElementById("noHistoryText")) document.getElementById("noHistoryText").style.display = "none";
-            
-            let timeNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            let isBuy = data.direction.includes("BUY");
-            let hBorder = isBuy ? "" : "history-sell";
-            let hColor = isBuy ? "text-green" : "text-red";
-            
-            historyList.insertAdjacentHTML('afterbegin', `
-                <div class="history-card ${hBorder}">
-                    <div><div style="font-weight:bold; color:white;">${data.pair} <span style="font-size: 12px; color:#00ffff;">(${currentTimeframe})</span></div>
-                    <div class="${hColor}" style="font-size: 14px; font-weight:bold; margin-top:2px;">${data.direction} @ ${data.entry_price}</div></div>
-                    <div style="text-align:right;"><div style="font-size: 12px; color:#94a3b8; margin-bottom:2px;">${timeNow}</div>
-                    <div style="font-size: 14px; font-weight:bold; color:#facc15;">TP: ${data.take_profit}</div></div>
-                </div>
-            `);
+            if (userPermissions.can_history === 1) {
+                let historyList = document.getElementById("historyList");
+                if(document.getElementById("noHistoryText")) document.getElementById("noHistoryText").style.display = "none";
+                
+                let timeNow = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                let isBuy = data.direction.includes("BUY");
+                let hBorder = isBuy ? "" : "history-sell";
+                let hColor = isBuy ? "text-green" : "text-red";
+                
+                historyList.insertAdjacentHTML('afterbegin', `
+                    <div class="history-card ${hBorder}" style="background:#141e30; padding:10px; border-radius:8px; margin-bottom:8px; border-left:4px solid #00ffff;">
+                        <div><div style="font-weight:bold; color:white;">${data.pair} <span style="font-size: 12px; color:#00ffff;">(${currentTimeframe})</span></div>
+                        <div class="${hColor}" style="font-size: 14px; font-weight:bold; margin-top:2px;">${data.direction} @ ${data.entry_price}</div></div>
+                    </div>
+                `);
+            }
 
             document.getElementById("detailsTable").style.display = "block";
             btn.innerText = "GENERATE SIGNAL";
@@ -326,6 +336,8 @@
             msg.style.display = "block";
             if(data.status === "success") {
                 isLoggedIn = true; 
+                userPermissions.can_signal = data.can_signal;
+                userPermissions.can_history = data.can_history;
                 msg.innerText = "Login Successful!";
                 msg.style.color = "#00ff88";
                 setTimeout(() => {
@@ -353,18 +365,40 @@
                 container.innerHTML = "";
                 data.users.forEach(u => {
                     if(u.username !== "admin") {
-                        container.innerHTML += `<div class="user-row"><b>${u.username}</b> <button onclick="deleteUser('${u.username}')" style="background:#ff3366; border:none; color:white; padding:2px 6px; float:right; border-radius:4px;">Delete</button></div>`;
+                        container.innerHTML += `
+                            <div class="user-row">
+                                <b>User:</b> ${u.username} | <b>Pass:</b> ${u.password}<br>
+                                <b>ID:</b> ${u.id_card} | <b>Phone:</b> ${u.phone}<br>
+                                <b>Expires:</b> <input type="date" id="end_${u.username}" value="${u.end_date}" style="background:#0d1424; color:white; border:1px solid #1f2a40; padding:2px;"><br>
+                                <label><input type="checkbox" id="sig_${u.username}" ${u.can_signal ? 'checked' : ''}> Signal</label>
+                                <label style="margin-left:10px;"><input type="checkbox" id="hist_${u.username}" ${u.can_history ? 'checked' : ''}> History</label>
+                                <br><button onclick="updateUser('${u.username}')" style="background:#00ff88; border:none; color:black; padding:3px 8px; border-radius:4px; margin-top:5px; font-weight:bold;">Update</button>
+                                <button onclick="deleteUser('${u.username}')" style="background:#ff3366; border:none; color:white; padding:3px 8px; border-radius:4px; margin-top:5px; float:right;">Delete</button>
+                            </div>`;
                     }
                 });
             }
         });
     }
 
+    function updateUser(username) {
+        if (!isAdmin) return;
+        let can_signal = document.getElementById(`sig_${username}`).checked ? 1 : 0;
+        let can_history = document.getElementById(`hist_${username}`).checked ? 1 : 0;
+        let end_date = document.getElementById(`end_${username}`).value;
+
+        fetch(`${apiBaseUrl}/update_user`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({username, status: 'active', can_signal, can_history, end_date})
+        }).then(res => res.json()).then(data => {
+            alert(data.message);
+            loadAdminUsers();
+        });
+    }
+
     function deleteUser(username) {
-        if (!isAdmin) {
-            alert("Only Admin can delete users!");
-            return;
-        }
+        if (!isAdmin) return;
         fetch(`${apiBaseUrl}/delete_user`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -373,7 +407,6 @@
     }
 
     function createNewUser() {
-        // Restrict non-admin users from creating new accounts
         if (!isAdmin) {
             alert("Only Admin can create new users!");
             return;
@@ -382,11 +415,13 @@
         let pass = document.getElementById("newPassword").value;
         let idCard = document.getElementById("newIdCard").value;
         let phone = document.getElementById("newPhone").value;
+        let startDate = document.getElementById("newStartDate").value;
+        let endDate = document.getElementById("newEndDate").value;
 
-        if (!user || !pass || !idCard || !phone) {
+        if (!user || !pass || !idCard || !phone || !endDate) {
             let msg = document.getElementById("adminMsg");
             msg.style.display = "block";
-            msg.innerText = "Please fill all fields (Username, Password, ID Card, Phone)!";
+            msg.innerText = "Please fill all fields including End Date!";
             msg.style.color = "#ff3366";
             return;
         }
@@ -394,7 +429,7 @@
         fetch(`${apiBaseUrl}/create_user`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username: user, password: pass, id_card: idCard, phone: phone})
+            body: JSON.stringify({username: user, password: pass, id_card: idCard, phone: phone, start_date: startDate, end_date: endDate})
         }).then(res => res.json()).then(data => {
             let msg = document.getElementById("adminMsg");
             msg.style.display = "block";
